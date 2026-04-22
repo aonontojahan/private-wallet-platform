@@ -11,8 +11,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     try {
       const wallet = await apiFetch("/wallet/balances");
       if (wallet) {
-        trustEl.textContent = formatCurrency(wallet.trust_balance);
-        incomeEl.textContent = formatCurrency(wallet.income_balance);
+        trustEl.innerHTML = `${formatCurrency(wallet.trust_balance)} <span style="font-size:1rem; color:var(--text-muted);">BDT</span>`;
+        incomeEl.innerHTML = `${formatCurrency(wallet.income_balance)} <span style="font-size:1rem; color:var(--text-muted);">BDT</span>`;
       }
     } catch (err) {
       showAlert("alert-container", err.message);

@@ -15,7 +15,12 @@ document.addEventListener("DOMContentLoaded", () => {
         });
         if (data && data.access_token) {
           localStorage.setItem("token", data.access_token);
-          window.location.href = "dashboard.html";
+          const user = await loadUser();
+          if (user && user.is_admin) {
+            window.location.href = "admin-dashboard.html";
+          } else {
+            window.location.href = "dashboard.html";
+          }
         }
       } catch (err) {
         errorDiv.textContent = err.message || "Login failed";
@@ -23,7 +28,26 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   }
+
+  enforceRoleGuards();
 });
+
+function enforceRoleGuards() {
+  const page = location.pathname.split("/").pop() || "dashboard.html";
+  if (page === "admin-dashboard.html") {
+    loadUser().then((user) => {
+      if (user && !user.is_admin) {
+        window.location.href = "dashboard.html";
+      }
+    });
+  } else if (page === "dashboard.html") {
+    loadUser().then((user) => {
+      if (user && user.is_admin) {
+        window.location.href = "admin-dashboard.html";
+      }
+    });
+  }
+}
 
 function logout() {
   localStorage.removeItem("token");

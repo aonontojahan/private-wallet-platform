@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
     return;
   }
 
-  // Sidebar toggle
+  // Sidebar toggle (admin layout)
   const sidebarToggle = document.getElementById("sidebar-toggle");
   const sidebar = document.getElementById("sidebar");
   const mainContent = document.getElementById("main-content");
@@ -17,9 +17,44 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  // User nav drawer toggle (user layout)
+  const userMenuBtn = document.getElementById("user-menu-btn");
+  const userNavDrawer = document.getElementById("user-nav-drawer");
+  const userNavOverlay = document.getElementById("user-nav-overlay");
+  const userNavClose = document.getElementById("user-nav-close");
+
+  function openUserNav() {
+    if (userNavDrawer) userNavDrawer.classList.add("open");
+    if (userNavOverlay) userNavOverlay.classList.add("open");
+  }
+  function closeUserNav() {
+    if (userNavDrawer) userNavDrawer.classList.remove("open");
+    if (userNavOverlay) userNavOverlay.classList.remove("open");
+  }
+
+  if (userMenuBtn) {
+    userMenuBtn.addEventListener("click", openUserNav);
+  }
+  if (userNavClose) {
+    userNavClose.addEventListener("click", closeUserNav);
+  }
+  if (userNavOverlay) {
+    userNavOverlay.addEventListener("click", closeUserNav);
+  }
+
   // Active nav highlighting
   const currentPage = location.pathname.split("/").pop() || "dashboard.html";
   document.querySelectorAll(".nav-item").forEach((item) => {
+    const href = item.getAttribute("data-href");
+    if (href === currentPage) {
+      item.classList.add("active");
+    }
+    item.addEventListener("click", () => {
+      if (href) window.location.href = href;
+    });
+  });
+
+  document.querySelectorAll(".user-nav-item").forEach((item) => {
     const href = item.getAttribute("data-href");
     if (href === currentPage) {
       item.classList.add("active");
@@ -102,14 +137,20 @@ async function markNotificationRead(id) {
 
 async function loadTopbarUser() {
   const nameEl = document.getElementById("topbar-user-name");
-  if (!nameEl) return;
+  const avatarEl = document.getElementById("user-avatar");
+  if (!nameEl && !avatarEl) return;
   try {
-    const wallet = await apiFetch("/wallet/balances");
-    if (wallet && wallet.user_id) {
-      nameEl.textContent = "User";
+    const user = await loadUser();
+    if (user) {
+      if (nameEl) nameEl.textContent = user.full_name || "User";
+      if (avatarEl) avatarEl.textContent = (user.full_name?.[0] || user.email?.[0] || "U").toUpperCase();
+    } else {
+      if (nameEl) nameEl.textContent = "Guest";
+      if (avatarEl) avatarEl.textContent = "G";
     }
   } catch {
-    nameEl.textContent = "Guest";
+    if (nameEl) nameEl.textContent = "Guest";
+    if (avatarEl) avatarEl.textContent = "G";
   }
 }
 
