@@ -98,19 +98,47 @@
     </div>
 
     <div id="user-section">
-      <div class="card" style="max-width:480px;">
-        <div class="card-header"><div class="card-title">Change Password</div></div>
-        <form id="change-password-form">
-          <div class="form-group">
-            <label>Current Password</label>
-            <input type="password" id="cp-current" class="form-control" required />
+      <div class="ac-section">
+        <div class="ac-filter-bar">
+          <div class="tx-filter-group">
+            <label>Account number</label>
+            <input type="text" class="tx-input" placeholder="Account number" id="filter-ac-number" />
           </div>
-          <div class="form-group">
-            <label>New Password</label>
-            <input type="password" id="cp-new" class="form-control" required />
+          <div class="tx-filter-group">
+            <label>Device status</label>
+            <select class="tx-select" id="filter-device-status">
+              <option value="">All</option>
+              <option value="created">Created</option>
+            </select>
           </div>
-          <button type="submit" class="btn btn-primary">Update Password</button>
-        </form>
+          <div class="tx-filter-group">
+            <label>Account status</label>
+            <select class="tx-select" id="filter-ac-status">
+              <option value="">All</option>
+              <option value="approved">Approved</option>
+              <option value="deleted">Deleted</option>
+            </select>
+          </div>
+          <button class="tx-filter-btn" id="btn-filter" title="Filter">&#8801;</button>
+          <button class="ac-add-btn" id="btn-add-account">Add account</button>
+        </div>
+
+        <div class="tx-table-wrap">
+          <table class="ac-table">
+            <thead>
+              <tr>
+                <th>ACCOUNT ID <span class="sort-icon">&#8693;</span></th>
+                <th>PAYMENT SYSTEM TYPE</th>
+                <th>WALLET NUMBER</th>
+                <th>WALLET BALANCE</th>
+                <th>DEVICE STATUS</th>
+                <th>ACCOUNT STATUS</th>
+              </tr>
+            </thead>
+            <tbody id="accounts-body"></tbody>
+          </table>
+          <div class="no-data" id="ac-no-data" style="display:none;">No Data</div>
+        </div>
       </div>
     </div>
   </div>
@@ -140,6 +168,31 @@
           </label>
         </div>
         <button type="submit" class="btn btn-primary btn-block">Create User</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Add Account Modal -->
+  <div class="modal-overlay" id="add-account-modal">
+    <div class="modal">
+      <div class="modal-header">
+        <div class="modal-title">Add Account</div>
+        <button class="modal-close" id="ac-modal-close">&times;</button>
+      </div>
+      <form id="add-account-form">
+        <div class="form-group">
+          <label>Payment System</label>
+          <select class="form-control" id="aa-type" required>
+            <option value="bkash">bKash</option>
+            <option value="nagad">Nagad</option>
+            <option value="bank">Bank</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Account Number</label>
+          <input type="text" id="aa-number" class="form-control" placeholder="e.g. 01XXXXXXXXX" required />
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Add Account</button>
       </form>
     </div>
   </div>

@@ -2162,3 +2162,356 @@ a {
     font-size: 0.85rem;
   }
 }
+
+/* ============================================
+   ACCOUNTS PAGE REDESIGN
+   ============================================ */
+
+.ac-section {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+}
+
+.ac-filter-bar {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.ac-filter-bar .tx-filter-group {
+  flex: 1;
+  min-width: 160px;
+}
+
+.ac-filter-bar .tx-input,
+.ac-filter-bar .tx-select {
+  width: 100%;
+}
+
+.ac-add-btn {
+  margin-left: auto;
+  padding: 0.6rem 1.2rem;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 0.95rem;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+
+.ac-add-btn:hover {
+  background: var(--accent-hover);
+}
+
+.ac-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.ac-table th {
+  text-align: left;
+  padding: 0.8rem 1rem;
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+
+.ac-table th .sort-icon {
+  margin-left: 0.3rem;
+  font-size: 0.8rem;
+  opacity: 0.6;
+}
+
+.ac-table td {
+  padding: 1rem;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+
+.ac-table tbody tr:hover {
+  background: var(--card-bg-hover);
+}
+
+.ac-row-id {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 0.2rem;
+}
+
+.ac-row-date {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.ac-status-badge {
+  display: inline-block;
+  padding: 0.35rem 0.7rem;
+  border-radius: 0.35rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  background: rgba(148, 163, 184, 0.1);
+  color: var(--text-muted);
+}
+
+.ac-status-badge.approved {
+  background: rgba(34, 197, 94, 0.1);
+  color: var(--success);
+}
+
+.ac-status-badge.deleted {
+  background: rgba(239, 68, 68, 0.1);
+  color: var(--danger);
+}
+
+.ac-lock-icon {
+  margin-left: 0.4rem;
+  font-size: 0.9rem;
+}
+
+/* ============================================
+   STATISTICS PAGE REDESIGN
+   ============================================ */
+
+.stat-page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.stat-tabs {
+  display: flex;
+  gap: 1.5rem;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 1.5rem;
+}
+
+.stat-tab {
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--text-muted);
+  font-size: 1rem;
+  padding: 0.6rem 0.2rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-bottom: -1px;
+  font-weight: 500;
+}
+
+.stat-tab:hover {
+  color: var(--text);
+}
+
+.stat-tab.active {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+
+.stat-date-range {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  padding: 0.5rem 0.9rem;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.stat-date-range input[type="date"] {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  width: 110px;
+  outline: none;
+}
+
+.stat-summary-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.stat-summary-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+}
+
+.stat-summary-card h3 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 1.25rem;
+}
+
+.stat-summary-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.7rem 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.95rem;
+}
+
+.stat-summary-row:last-child {
+  border-bottom: none;
+}
+
+.stat-summary-row .label {
+  color: var(--text);
+}
+
+.stat-summary-row .value {
+  font-weight: 600;
+  color: var(--text);
+}
+
+/* History table for statistics */
+.hist-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.hist-table th {
+  text-align: left;
+  padding: 0.8rem 1rem;
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  border-bottom: 1px solid var(--border);
+}
+
+.hist-table td {
+  padding: 1rem;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+
+.hist-table tbody tr:hover {
+  background: var(--card-bg-hover);
+}
+
+.hist-id-col {
+  min-width: 200px;
+}
+
+.hist-date {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 0.25rem;
+}
+
+.hist-id-line {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-bottom: 0.15rem;
+}
+
+.hist-wallet {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.hist-wallet strong {
+  color: var(--text);
+}
+
+.hist-op-type {
+  display: inline-block;
+  padding: 0.4rem 0.8rem;
+  border-radius: 0.4rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.hist-op-type.credit {
+  color: var(--success);
+}
+
+.hist-op-type.debit {
+  background: rgba(239, 68, 68, 0.1);
+  color: var(--danger);
+}
+
+.hist-amount-pos {
+  color: var(--success);
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.hist-amount-neg {
+  color: var(--danger);
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.hist-balance {
+  font-weight: 600;
+  color: var(--text);
+  font-size: 1rem;
+}
+
+.hist-balance.negative {
+  color: var(--danger);
+}
+
+/* Multi-select dropdown style */
+.tx-select-wrap {
+  position: relative;
+}
+
+.tx-select-clear {
+  position: absolute;
+  right: 2rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+/* Section title inside tx-section */
+.tx-section h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 1.25rem;
+}
+
+@media (max-width: 768px) {
+  .stat-summary-grid {
+    grid-template-columns: 1fr;
+  }
+  .ac-filter-bar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .ac-add-btn {
+    margin-left: 0;
+    width: 100%;
+  }
+}

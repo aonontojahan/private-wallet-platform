@@ -74,54 +74,147 @@
   <div class="user-page-content">
     <div id="alert-container"></div>
 
-    <div class="filter-bar">
-      <div class="form-group">
-        <label>From</label>
-        <input type="date" id="stat-from" class="form-control" />
+    <!-- Summary cards -->
+    <div class="stat-page-header">
+      <div class="stat-tabs">
+        <button class="stat-tab active" data-tab="trust">Trust history</button>
+        <button class="stat-tab" data-tab="income">Income balance</button>
       </div>
-      <div class="form-group">
-        <label>To</label>
-        <input type="date" id="stat-to" class="form-control" />
-      </div>
-      <button class="btn btn-primary" id="btn-stat-filter">Apply</button>
-      <button class="btn btn-success" id="btn-stat-export">Download</button>
-    </div>
-
-    <div class="grid grid-4" style="margin-bottom:1.5rem;">
-      <div class="stat-card">
-        <div class="value" id="st-deposits">0.00</div>
-        <div class="label">Total Deposits</div>
-      </div>
-      <div class="stat-card">
-        <div class="value" id="st-withdrawals">0.00</div>
-        <div class="label">Total Withdrawals</div>
-      </div>
-      <div class="stat-card">
-        <div class="value" id="st-pending">0</div>
-        <div class="label">Pending</div>
-      </div>
-      <div class="stat-card">
-        <div class="value" id="st-total">0</div>
-        <div class="label">Total Txns</div>
+      <div class="stat-date-range">
+        <input type="date" id="stat-from" />
+        <span>-</span>
+        <input type="date" id="stat-to" />
       </div>
     </div>
 
-    <div class="card">
-      <div class="card-header"><div class="card-title">Transactions by Account</div></div>
-      <div class="table-container">
-        <table class="data-table">
+    <div class="stat-summary-grid">
+      <div class="stat-summary-card">
+        <h3>Deposits</h3>
+        <div class="stat-summary-row">
+          <span class="label">Deposit amount</span>
+          <span class="value" id="sum-deposit-amount">0 BDT</span>
+        </div>
+        <div class="stat-summary-row">
+          <span class="label">Account withdrawal amount</span>
+          <span class="value" id="sum-withdrawal-amount">0 BDT</span>
+        </div>
+        <div class="stat-summary-row">
+          <span class="label">Deposit other amount</span>
+          <span class="value" id="sum-deposit-other">0 BDT</span>
+        </div>
+        <div class="stat-summary-row">
+          <span class="label">Withdrawal other amount</span>
+          <span class="value" id="sum-withdrawal-other">0 BDT</span>
+        </div>
+      </div>
+      <div class="stat-summary-card">
+        <h3>Transactions</h3>
+        <div class="stat-summary-row">
+          <span class="label">Account transaction amount</span>
+          <span class="value" id="sum-tx-amount">0 BDT</span>
+        </div>
+        <div class="stat-summary-row">
+          <span class="label">Account transaction trust debiting amount</span>
+          <span class="value" id="sum-trust-debit">0 BDT</span>
+        </div>
+        <div class="stat-summary-row">
+          <span class="label">Account transaction income commission amount</span>
+          <span class="value" id="sum-income-comm">0 BDT</span>
+        </div>
+        <div class="stat-summary-row">
+          <span class="label">Account transaction income deduct amount</span>
+          <span class="value" id="sum-income-deduct">0 BDT</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- History section -->
+    <div class="tx-section">
+      <div class="tx-filter-bar">
+        <div class="tx-filter-group">
+          <label>Transaction ID</label>
+          <input type="text" class="tx-input" placeholder="Transaction ID" id="filter-hist-id" />
+        </div>
+        <div class="tx-filter-group">
+          <label>Wallet number</label>
+          <input type="text" class="tx-input" placeholder="Wallet number" id="filter-hist-wallet" />
+        </div>
+        <div class="tx-filter-group">
+          <label>Period</label>
+          <div class="tx-date-input" id="hist-date-wrap">
+            <span>Date</span>
+            <span class="tx-date-sep">-</span>
+            <input type="date" id="filter-hist-date" />
+            <button class="tx-date-btn" id="hist-date-btn">&#128197;</button>
+          </div>
+        </div>
+        <div class="tx-filter-group">
+          <label>Operation types</label>
+          <select class="tx-select" id="filter-hist-op">
+            <option value="">All</option>
+            <option value="deposit">Deposit</option>
+            <option value="withdrawal">Withdrawal</option>
+          </select>
+        </div>
+        <button class="tx-download" id="btn-hist-download">
+          <span>&#128229;</span> Download
+        </button>
+      </div>
+
+      <div class="tx-table-wrap">
+        <table class="hist-table">
           <thead>
             <tr>
-              <th>Account Type</th>
-              <th>Count</th>
-              <th>Total Amount</th>
+              <th>ID</th>
+              <th>OPERATION TYPE</th>
+              <th>AMOUNT</th>
+              <th>BALANCE</th>
             </tr>
           </thead>
-          <tbody id="stats-body"></tbody>
+          <tbody id="history-body"></tbody>
         </table>
+        <div class="no-data" id="hist-no-data" style="display:none;">No Data</div>
+      </div>
+    </div>
+
+    <!-- Transactions by accounts -->
+    <div class="tx-section" style="margin-top:1.5rem;">
+      <h3>Transactions by accounts</h3>
+      <div class="tx-filter-bar">
+        <div class="tx-filter-group">
+          <label>Wallet number</label>
+          <input type="text" class="tx-input" placeholder="Wallet number" id="filter-by-wallet" />
+        </div>
+        <div class="tx-filter-group">
+          <label>Payment system</label>
+          <select class="tx-select" id="filter-by-system">
+            <option value="">All</option>
+            <option value="bkash">bKash</option>
+            <option value="nagad">Nagad</option>
+            <option value="bank">Bank</option>
+          </select>
+        </div>
+        <button class="tx-download" id="btn-by-download" style="margin-left:auto;">
+          <span>&#128229;</span> Download
+        </button>
+      </div>
+      <div class="tx-table-wrap">
+        <table class="tx-table">
+          <thead>
+            <tr>
+              <th>ACCOUNT TYPE</th>
+              <th>COUNT</th>
+              <th>TOTAL AMOUNT</th>
+            </tr>
+          </thead>
+          <tbody id="by-account-body"></tbody>
+        </table>
+        <div class="no-data" id="by-no-data" style="display:none;">No Data</div>
       </div>
     </div>
   </div>
+
+  <button class="feedback-btn" id="feedback-btn">Leave feedback</button>
 
   <!-- Support Modal -->
   <div class="support-modal-overlay" id="support-modal">
