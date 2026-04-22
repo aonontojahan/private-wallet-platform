@@ -75,6 +75,74 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Load user info in topbar
   loadTopbarUser();
+
+  // Avatar dropdown
+  const avatar = document.getElementById("user-avatar");
+  const avatarDropdown = document.getElementById("avatar-dropdown");
+  if (avatar && avatarDropdown) {
+    avatar.addEventListener("click", (e) => {
+      e.stopPropagation();
+      avatarDropdown.classList.toggle("open");
+      // close others
+      const nd = document.getElementById("notification-dropdown");
+      if (nd) nd.classList.remove("open");
+    });
+  }
+
+  // FAQ modal
+  const helpBtn = document.getElementById("help-btn");
+  const faqModal = document.getElementById("faq-modal");
+  const faqModalClose = document.getElementById("faq-modal-close");
+  const faqSearch = document.getElementById("faq-search");
+  const faqTabs = document.querySelectorAll(".faq-tab");
+  if (helpBtn && faqModal) {
+    helpBtn.addEventListener("click", () => {
+      faqModal.classList.add("open");
+      renderFAQ();
+    });
+  }
+  if (faqModalClose && faqModal) {
+    faqModalClose.addEventListener("click", () => faqModal.classList.remove("open"));
+    faqModal.addEventListener("click", (e) => {
+      if (e.target === faqModal) faqModal.classList.remove("open");
+    });
+  }
+  if (faqSearch) {
+    faqSearch.addEventListener("input", (e) => {
+      const activeTab = document.querySelector(".faq-tab.active");
+      const cat = activeTab ? activeTab.getAttribute("data-category") : "all";
+      renderFAQ(e.target.value, cat);
+    });
+  }
+  faqTabs.forEach((tab) => {
+    tab.addEventListener("click", () => {
+      faqTabs.forEach((t) => t.classList.remove("active"));
+      tab.classList.add("active");
+      const cat = tab.getAttribute("data-category");
+      const searchVal = faqSearch ? faqSearch.value : "";
+      renderFAQ(searchVal, cat);
+    });
+  });
+
+  // Exchange rate swap
+  const swapBtn = document.getElementById("swap-rate-btn");
+  const rateText = document.getElementById("exchange-rate-text");
+  if (swapBtn && rateText) {
+    let usdtToBdt = true;
+    swapBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      usdtToBdt = !usdtToBdt;
+      rateText.textContent = usdtToBdt ? "1 USDT → 127.65 BDT" : "1 BDT → 0.008 USDT";
+    });
+  }
+
+  // Close dropdowns on outside click
+  document.addEventListener("click", () => {
+    if (avatarDropdown) avatarDropdown.classList.remove("open");
+  });
+
+  // Populate avatar dropdown with user info
+  populateAvatarDropdown();
 });
 
 async function loadNotificationBell() {
@@ -108,12 +176,13 @@ async function loadNotificationBell() {
   }
 }
 
-function renderNotifications(container, items) {
+function renderNotifications(dropdownEl, items) {
+  const body = dropdownEl.querySelector(".notification-dropdown-body") || dropdownEl;
   if (!items.length) {
-    container.innerHTML = `<div class="empty-state">No notifications</div>`;
+    body.innerHTML = `<div class="empty-state" style="padding:2rem; text-align:center; color:var(--text-muted);">No notifications</div>`;
     return;
   }
-  container.innerHTML = items
+  body.innerHTML = items
     .map(
       (n) => `
     <div class="notification-item" onclick="markNotificationRead(${n.id})">
@@ -152,6 +221,112 @@ async function loadTopbarUser() {
     if (nameEl) nameEl.textContent = "Guest";
     if (avatarEl) avatarEl.textContent = "G";
   }
+}
+
+async function populateAvatarDropdown() {
+  const nameEl = document.getElementById("dropdown-user-name");
+  const emailEl = document.getElementById("dropdown-user-email");
+  const avatarLarge = document.getElementById("dropdown-avatar-large");
+  if (!nameEl && !emailEl) return;
+  try {
+    const user = await loadUser();
+    if (user) {
+      const initial = (user.full_name?.[0] || user.email?.[0] || "U").toUpperCase();
+      if (nameEl) nameEl.textContent = user.full_name || "User";
+      if (emailEl) emailEl.textContent = user.email || "";
+      if (avatarLarge) avatarLarge.textContent = initial;
+    }
+  } catch {
+    // silent
+  }
+}
+
+const faqData = [
+  {
+    category: "access",
+    question: "What should I do if I forget my password?",
+    answer: "Contact your administrator or support team at shakibalarman.cse@gmail.com. They can reset your password for you."
+  },
+  {
+    category: "access",
+    question: "Why can't I see any data after logging in?",
+    answer: "Ensure your account is active. If you just registered, an admin may need to approve your account first. Contact support if the issue persists."
+  },
+  {
+    category: "access",
+    question: "What browsers and devices are supported?",
+    answer: "Our platform works on all modern browsers including Chrome, Firefox, Safari, and Edge. It is also responsive on mobile devices."
+  },
+  {
+    category: "balances",
+    question: "What is the difference between Trust balance and Income balance?",
+    answer: "Trust balance is used as a security deposit for transactions. Income balance represents your earnings and can be withdrawn."
+  },
+  {
+    category: "balances",
+    question: "What is the minimum trust balance required?",
+    answer: "The minimum trust balance is 10,000 BDT and the minimum work trust balance is 15,000 BDT."
+  },
+  {
+    category: "transactions",
+    question: "How long do withdrawals take?",
+    answer: "Withdrawals take 30 days from the last order in transactions. If there were no transactions, the refund will take up to 3 days."
+  },
+  {
+    category: "transactions",
+    question: "What fees are charged on deposits and withdrawals?",
+    answer: "A commission is deducted from deposits and an income deduct fee applies to withdrawals. The exact amount is shown in your transaction details."
+  },
+  {
+    category: "accounts",
+    question: "How do I add a new withdrawal account?",
+    answer: "Go to the Withdrawals page and submit a new withdrawal request with your bKash, Nagad, or Bank account details."
+  },
+  {
+    category: "security",
+    question: "Is two-factor authentication available?",
+    answer: "Two-factor authentication is coming soon. You will be notified once it is available for your account."
+  },
+  {
+    category: "security",
+    question: "How is my data protected?",
+    answer: "All data is encrypted in transit using HTTPS and stored securely in our PostgreSQL database with role-based access control."
+  }
+];
+
+function renderFAQ(filterText = "", category = "all") {
+  const list = document.getElementById("faq-list");
+  if (!list) return;
+  let filtered = faqData;
+  if (category !== "all") {
+    filtered = filtered.filter((f) => f.category === category);
+  }
+  if (filterText.trim()) {
+    const q = filterText.toLowerCase();
+    filtered = filtered.filter((f) => f.question.toLowerCase().includes(q) || f.answer.toLowerCase().includes(q));
+  }
+  if (!filtered.length) {
+    list.innerHTML = `<div class="empty-state">No questions found</div>`;
+    return;
+  }
+  list.innerHTML = filtered
+    .map(
+      (f, idx) => `
+    <div class="faq-item" data-faq="${idx}">
+      <div class="faq-question" onclick="toggleFAQItem(this)">
+        <span>${escapeHtml(f.question)}</span>
+        <span class="faq-arrow">&#8595;</span>
+      </div>
+      <div class="faq-answer">${escapeHtml(f.answer)}</div>
+    </div>
+  `
+    )
+    .join("");
+}
+
+function toggleFAQItem(el) {
+  const item = el.closest(".faq-item");
+  item.classList.toggle("open");
 }
 
 function escapeHtml(text) {

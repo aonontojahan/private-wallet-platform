@@ -153,13 +153,112 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   btnFilter.addEventListener("click", () => renderTransactions(allTransactions));
 
+  // Deposit modal
+  const depositModal = document.getElementById("deposit-modal");
+  const depositModalClose = document.getElementById("deposit-modal-close");
   btnDeposit.addEventListener("click", () => {
-    window.location.href = "transactions.html";
+    if (depositModal) depositModal.classList.add("open");
   });
+  if (depositModalClose && depositModal) {
+    depositModalClose.addEventListener("click", () => depositModal.classList.remove("open"));
+    depositModal.addEventListener("click", (e) => {
+      if (e.target === depositModal) depositModal.classList.remove("open");
+    });
+  }
+
+  // Withdraw modal
+  const withdrawModal = document.getElementById("withdraw-modal");
+  const withdrawModalClose = document.getElementById("withdraw-modal-close");
+  const withdrawForm = document.getElementById("withdraw-form");
+  const wAmount = document.getElementById("w-amount");
+  const wAddress = document.getElementById("w-wallet-address");
+  const wUnderstand = document.getElementById("w-understand");
+  const btnSubmitWithdraw = document.getElementById("btn-submit-withdraw");
+  const withdrawAvailable = document.getElementById("withdraw-available");
 
   btnWithdraw.addEventListener("click", () => {
-    window.location.href = "withdrawals.html";
+    if (withdrawModal) {
+      // load current trust balance into available
+      const trustText = trustEl.textContent.replace(/[^0-9.,-]/g, "").replace(/,/g, "");
+      const trustNum = parseFloat(trustText) || 0;
+      if (withdrawAvailable) {
+        withdrawAvailable.textContent = formatCurrency(trustNum) + " BDT";
+        if (trustNum < 0) {
+          withdrawAvailable.classList.add("negative");
+        } else {
+          withdrawAvailable.classList.remove("negative");
+        }
+      }
+      withdrawModal.classList.add("open");
+      updateWithdrawButtonText();
+    }
   });
+
+  if (withdrawModalClose && withdrawModal) {
+    withdrawModalClose.addEventListener("click", () => withdrawModal.classList.remove("open"));
+    withdrawModal.addEventListener("click", (e) => {
+      if (e.target === withdrawModal) withdrawModal.classList.remove("open");
+    });
+  }
+
+  function updateWithdrawButtonText() {
+    if (!wAmount || !btnSubmitWithdraw) return;
+    const amt = parseFloat(wAmount.value) || 0;
+    const usdt = (amt * 0.01).toFixed(2);
+    btnSubmitWithdraw.textContent = `Withdraw ${usdt} USDT`;
+  }
+
+  if (wAmount) {
+    wAmount.addEventListener("input", updateWithdrawButtonText);
+  }
+
+  if (withdrawForm) {
+    withdrawForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      clearAlert("alert-container");
+      if (!wUnderstand.checked) {
+        showAlert("alert-container", "Please confirm that you understand the withdrawal terms.");
+        return;
+      }
+      const amount = parseFloat(wAmount.value);
+      const walletAddress = wAddress.value.trim();
+      if (!amount || amount <= 0) {
+        showAlert("alert-container", "Please enter a valid withdrawal amount.");
+        return;
+      }
+      try {
+        await apiFetch("/transactions/withdrawals", {
+          method: "POST",
+          body: {
+            type: "withdrawal",
+            amount,
+            account_type: "crypto",
+            account_number: walletAddress,
+          },
+        });
+        withdrawModal.classList.remove("open");
+        withdrawForm.reset();
+        showAlert("alert-container", "Withdrawal request submitted successfully.", "success");
+        // Refresh balances
+        const wallet = await apiFetch("/wallet/balances");
+        if (wallet) {
+          const trustNum = Number(wallet.trust_balance);
+          trustEl.innerHTML = `${formatCurrency(wallet.trust_balance)} <span style="font-size:1rem; color:var(--text-muted);">BDT</span>`;
+          if (trustNum < 0) {
+            trustEl.classList.add("negative");
+            trustStatusDot.style.background = "var(--danger)";
+          } else {
+            trustEl.classList.remove("negative");
+            trustStatusDot.style.background = "var(--success)";
+          }
+          incomeEl.innerHTML = `${formatCurrency(wallet.income_balance)} <span style="font-size:1rem; color:var(--text-muted);">BDT</span>`;
+        }
+        loadStats();
+      } catch (err) {
+        showAlert("alert-container", err.message);
+      }
+    });
+  }
 
   btnShowDetails.addEventListener("click", () => {
     window.location.href = "statistics.html";

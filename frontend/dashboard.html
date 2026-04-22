@@ -33,15 +33,41 @@
       <div class="user-topbar-title">Dashboard</div>
     </div>
     <div class="user-topbar-right">
-      <button class="topbar-btn">Support</button>
-      <div class="topbar-pill">1 USDT &rarr; 127.65 BDT</div>
+      <a href="mailto:shakibalarman.cse@gmail.com?subject=Support%20Request" class="topbar-btn">Support</a>
+      <div class="topbar-pill" id="exchange-pill">
+        <span id="exchange-rate-text">1 USDT &rarr; 127.65 BDT</span>
+        <button class="swap-btn" id="swap-rate-btn">&#8644;</button>
+      </div>
       <div class="notification-bell" id="notification-bell">
         &#128276;
         <span class="badge" id="notification-badge" style="display:none;">0</span>
-        <div class="notification-dropdown" id="notification-dropdown"></div>
+        <div class="notification-dropdown" id="notification-dropdown">
+          <div class="notification-dropdown-header">
+            <span>Notifications</span>
+            <a href="#" onclick="event.preventDefault();">Mark all as read</a>
+          </div>
+          <div class="notification-dropdown-body" id="notification-dropdown-body"></div>
+        </div>
       </div>
-      <button class="topbar-icon-btn" title="Help">?</button>
-      <div class="avatar" id="user-avatar">U</div>
+      <button class="topbar-icon-btn" id="help-btn" title="Help">?</button>
+      <div class="avatar-wrap">
+        <div class="avatar" id="user-avatar">U</div>
+        <div class="avatar-dropdown" id="avatar-dropdown">
+          <div class="avatar-dropdown-header">
+            <div class="avatar-large" id="dropdown-avatar-large">U</div>
+            <div>
+              <div class="user-name" id="dropdown-user-name">User</div>
+              <div class="user-email" id="dropdown-user-email">user@example.com</div>
+            </div>
+          </div>
+          <button class="avatar-dropdown-btn">Connect two-factor authentication</button>
+          <button class="avatar-dropdown-btn">Check your manager</button>
+          <div class="avatar-dropdown-divider"></div>
+          <button class="avatar-dropdown-item" onclick="logout()">
+            <span>&#128682;</span> Logout
+          </button>
+        </div>
+      </div>
     </div>
   </header>
 
@@ -188,6 +214,87 @@
           <tbody id="transactions-body"></tbody>
         </table>
       </div>
+    </div>
+  </div>
+
+  <!-- Deposit Modal -->
+  <div class="modal-overlay" id="deposit-modal">
+    <div class="modal">
+      <div class="modal-header">
+        <div class="modal-title">Refill trust balance</div>
+        <button class="modal-close" id="deposit-modal-close">&times;</button>
+      </div>
+      <div class="deposit-info">
+        <div class="deposit-row">
+          <span>Minimum trust balance</span>
+          <span><strong>10.000</strong> BDT</span>
+        </div>
+        <div class="deposit-row">
+          <span>Minimum work trust balance</span>
+          <span><strong>15.000</strong> BDT</span>
+        </div>
+      </div>
+      <div class="qr-code">
+        <img src="images/bkash_qr.png" alt="bKash QR Code" />
+      </div>
+    </div>
+  </div>
+
+  <!-- Withdraw Modal -->
+  <div class="modal-overlay" id="withdraw-modal">
+    <div class="modal">
+      <div class="modal-header">
+        <div class="modal-title">Create withdrawal</div>
+        <button class="modal-close" id="withdraw-modal-close">&times;</button>
+      </div>
+      <div class="withdraw-info-row">
+        <span>Available for withdrawal</span>
+        <span id="withdraw-available" class="withdraw-amount">0.00 BDT</span>
+      </div>
+      <form id="withdraw-form">
+        <div class="form-group">
+          <label>Wallet address *</label>
+          <input type="text" id="w-wallet-address" class="form-control" placeholder="Enter wallet address" required />
+        </div>
+        <div class="form-group">
+          <label>Withdrawal amount *</label>
+          <div class="input-with-suffix">
+            <input type="number" step="0.01" id="w-amount" class="form-control" value="1" required />
+            <span class="input-suffix">BDT</span>
+          </div>
+          <div class="rate-note">1 BDT = 0.01 USDT</div>
+        </div>
+        <div class="withdraw-note">
+          Withdrawal takes 30 days from the last order in transactions. If there were no transactions, the refund will take up to 3 days.
+        </div>
+        <label class="checkbox-label">
+          <input type="checkbox" id="w-understand" required />
+          I understand
+        </label>
+        <button type="submit" class="btn btn-primary btn-block" id="btn-submit-withdraw">Withdraw 0.01 USDT</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- FAQ Modal -->
+  <div class="faq-modal-overlay" id="faq-modal">
+    <div class="faq-modal">
+      <div class="faq-modal-header">
+        <h2>Frequently Asked Questions</h2>
+        <button class="modal-close" id="faq-modal-close">&times;</button>
+      </div>
+      <div class="faq-search">
+        <input type="text" placeholder="Search for a question" id="faq-search" />
+      </div>
+      <div class="faq-tabs">
+        <button class="faq-tab active" data-category="all">All</button>
+        <button class="faq-tab" data-category="access">Access & Authorization</button>
+        <button class="faq-tab" data-category="balances">Balances & Funds</button>
+        <button class="faq-tab" data-category="transactions">Transactions & Operations</button>
+        <button class="faq-tab" data-category="accounts">Accounts & Verification</button>
+        <button class="faq-tab" data-category="security">Interface & Security</button>
+      </div>
+      <div class="faq-list" id="faq-list"></div>
     </div>
   </div>
 
