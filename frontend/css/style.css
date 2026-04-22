@@ -2502,6 +2502,13 @@ a {
   margin-bottom: 1.25rem;
 }
 
+/* Statement page subtitle */
+.stmt-subtitle {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin-bottom: 1rem;
+}
+
 @media (max-width: 768px) {
   .stat-summary-grid {
     grid-template-columns: 1fr;
