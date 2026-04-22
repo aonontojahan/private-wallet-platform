@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard - Private Wallet Platform</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <h3>Private Wallet</h3>
+        <button class="sidebar-toggle" id="sidebar-toggle">&#9776;</button>
+      </div>
+      <ul class="nav-menu">
+        <li class="nav-item active" data-href="dashboard.html"><span>Dashboard</span></li>
+        <li class="nav-item" data-href="transactions.html"><span>Transactions</span></li>
+        <li class="nav-item" data-href="withdrawals.html"><span>Withdrawals</span></li>
+        <li class="nav-item" data-href="accounts.html"><span>Accounts</span></li>
+        <li class="nav-item" data-href="statistics.html"><span>Statistics</span></li>
+      </ul>
+      <div class="sidebar-footer">
+        <button class="btn btn-danger btn-block" id="logout-btn">Logout</button>
+      </div>
+    </aside>
+
+    <div class="main-content" id="main-content">
+      <header class="topbar">
+        <div class="topbar-left"><h2>Dashboard</h2></div>
+        <div class="topbar-right">
+          <div class="notification-bell" id="notification-bell">
+            &#128276;
+            <span class="badge" id="notification-badge" style="display:none;">0</span>
+            <div class="notification-dropdown" id="notification-dropdown"></div>
+          </div>
+          <div class="user-menu">
+            <span id="topbar-user-name">User</span>
+          </div>
+        </div>
+      </header>
+
+      <div class="page-content">
+        <div id="alert-container"></div>
+
+        <div class="grid grid-2" style="margin-bottom:1.5rem;">
+          <div class="balance-card">
+            <div class="label">Trust Balance</div>
+            <div class="amount" id="trust-balance">0.00</div>
+            <div class="icon">&#128176;</div>
+          </div>
+          <div class="balance-card">
+            <div class="label">Income Balance</div>
+            <div class="amount" id="income-balance">0.00</div>
+            <div class="icon">&#128200;</div>
+            <div style="margin-top:0.75rem; display:flex; align-items:center; gap:0.5rem;">
+              <label class="toggle-switch">
+                <input type="checkbox" id="deduct-toggle" />
+                <span class="toggle-slider"></span>
+              </label>
+              <span style="font-size:0.85rem; color:var(--text-muted);">Deduct from income</span>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-bottom:1.5rem;">
+          <button class="btn btn-success" id="btn-deposit" style="margin-right:0.5rem;">+ Deposit</button>
+          <button class="btn btn-primary" id="btn-withdraw">- Withdraw</button>
+        </div>
+
+        <div class="grid grid-4" style="margin-bottom:1.5rem;">
+          <div class="stat-card">
+            <div class="value" id="stat-deposits">0.00</div>
+            <div class="label">Total Deposits</div>
+          </div>
+          <div class="stat-card">
+            <div class="value" id="stat-withdrawals">0.00</div>
+            <div class="label">Total Withdrawals</div>
+          </div>
+          <div class="stat-card">
+            <div class="value" id="stat-pending">0</div>
+            <div class="label">Pending</div>
+          </div>
+          <div class="stat-card">
+            <div class="value" id="stat-count">0</div>
+            <div class="label">Transactions</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Recent Transactions</div>
+            <a href="transactions.html">View All</a>
+          </div>
+          <div class="table-container">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Type</th>
+                  <th>Amount</th>
+                  <th>Status</th>
+                  <th>Date</th>
+                </tr>
+              </thead>
+              <tbody id="recent-transactions"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/dashboard.js"></script>
+</body>
+</html>

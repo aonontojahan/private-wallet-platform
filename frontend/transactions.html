@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Transactions - Private Wallet Platform</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <h3>Private Wallet</h3>
+        <button class="sidebar-toggle" id="sidebar-toggle">&#9776;</button>
+      </div>
+      <ul class="nav-menu">
+        <li class="nav-item" data-href="dashboard.html"><span>Dashboard</span></li>
+        <li class="nav-item active" data-href="transactions.html"><span>Transactions</span></li>
+        <li class="nav-item" data-href="withdrawals.html"><span>Withdrawals</span></li>
+        <li class="nav-item" data-href="accounts.html"><span>Accounts</span></li>
+        <li class="nav-item" data-href="statistics.html"><span>Statistics</span></li>
+      </ul>
+      <div class="sidebar-footer">
+        <button class="btn btn-danger btn-block" id="logout-btn">Logout</button>
+      </div>
+    </aside>
+
+    <div class="main-content" id="main-content">
+      <header class="topbar">
+        <div class="topbar-left"><h2>Transactions</h2></div>
+        <div class="topbar-right">
+          <div class="notification-bell" id="notification-bell">
+            &#128276;
+            <span class="badge" id="notification-badge" style="display:none;">0</span>
+            <div class="notification-dropdown" id="notification-dropdown"></div>
+          </div>
+          <div class="user-menu"><span id="topbar-user-name">User</span></div>
+        </div>
+      </header>
+
+      <div class="page-content">
+        <div id="alert-container"></div>
+
+        <div class="filter-bar">
+          <div class="form-group">
+            <label>From</label>
+            <input type="date" id="filter-from" class="form-control" />
+          </div>
+          <div class="form-group">
+            <label>To</label>
+            <input type="date" id="filter-to" class="form-control" />
+          </div>
+          <div class="form-group">
+            <label>Type</label>
+            <select id="filter-type" class="form-control">
+              <option value="">All</option>
+              <option value="deposit">Deposit</option>
+              <option value="withdrawal">Withdrawal</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Status</label>
+            <select id="filter-status" class="form-control">
+              <option value="">All</option>
+              <option value="pending">Pending</option>
+              <option value="approved">Approved</option>
+              <option value="rejected">Rejected</option>
+            </select>
+          </div>
+          <button class="btn btn-primary" id="btn-filter">Filter</button>
+          <button class="btn btn-success" id="btn-export">Download CSV</button>
+        </div>
+
+        <div class="card">
+          <div class="table-container">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Type</th>
+                  <th>Account</th>
+                  <th>Number</th>
+                  <th>Amount</th>
+                  <th>Commission</th>
+                  <th>Income Deduct</th>
+                  <th>Status</th>
+                  <th>Date</th>
+                </tr>
+              </thead>
+              <tbody id="transactions-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/transactions.js"></script>
+</body>
+</html>

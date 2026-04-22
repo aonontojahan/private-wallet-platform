@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from backend.database import get_db
 from backend.auth import verify_password, create_access_token, get_password_hash, get_current_user
 from backend.models import User
-from backend.schemas import LoginRequest, Token, ChangePasswordRequest, MessageResponse
+from backend.schemas import LoginRequest, Token, ChangePasswordRequest, MessageResponse, UserRead
 from backend.services import notification_service
 
 router = APIRouter(prefix="/auth", tags=["Auth"])
@@ -24,6 +24,11 @@ def login(payload: LoginRequest, db: Session = Depends(get_db)):
         )
     token = create_access_token(data={"sub": user.id})
     return {"access_token": token, "token_type": "bearer"}
+
+
+@router.get("/me", response_model=UserRead)
+def get_me(current_user: User = Depends(get_current_user)):
+    return current_user
 
 
 @router.post("/change-password", response_model=MessageResponse)
