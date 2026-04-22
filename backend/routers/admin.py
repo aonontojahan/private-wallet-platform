@@ -13,7 +13,7 @@ from backend.schemas import (
     TransactionApprovalRequest,
     BalanceAdjustmentRequest,
 )
-from backend.services import ledger_service
+from backend.services import ledger_service, notification_service
 from decimal import Decimal
 
 router = APIRouter(prefix="/admin", tags=["Admin"])
@@ -108,6 +108,12 @@ def admin_create_deposit(
         account_number=account_number,
     )
     db.add(transaction)
+    notification_service.create_notification(
+        db=db,
+        user_id=user_id,
+        title="Deposit Processed",
+        message=f"A deposit of {amount} has been credited to your trust balance.",
+    )
     db.commit()
     db.refresh(transaction)
     return transaction
@@ -129,6 +135,12 @@ def approve_transaction(
     txn.status = "approved"
     if payload.admin_note:
         txn.admin_note = payload.admin_note
+    notification_service.create_notification(
+        db=db,
+        user_id=txn.user_id,
+        title="Withdrawal Approved",
+        message=f"Your withdrawal request of {txn.amount} has been approved.",
+    )
     db.commit()
     db.refresh(txn)
     return txn
@@ -171,6 +183,12 @@ def reject_transaction(
     txn.status = "rejected"
     if payload.admin_note:
         txn.admin_note = payload.admin_note
+    notification_service.create_notification(
+        db=db,
+        user_id=txn.user_id,
+        title="Withdrawal Rejected",
+        message=f"Your withdrawal request of {txn.amount} has been rejected.",
+    )
     db.commit()
     db.refresh(txn)
     return txn
@@ -220,5 +238,11 @@ def adjust_balance(
                 reference_type="admin_adjustment",
             )
 
+    notification_service.create_notification(
+        db=db,
+        user_id=payload.user_id,
+        title="Balance Adjusted",
+        message=f"Your {payload.wallet_type} balance has been adjusted by {payload.amount}.",
+    )
     db.commit()
     return {"message": "Balance adjusted successfully"}

@@ -4,6 +4,7 @@ from backend.database import get_db
 from backend.auth import verify_password, create_access_token, get_password_hash, get_current_user
 from backend.models import User
 from backend.schemas import LoginRequest, Token, ChangePasswordRequest, MessageResponse
+from backend.services import notification_service
 
 router = APIRouter(prefix="/auth", tags=["Auth"])
 
@@ -37,5 +38,11 @@ def change_password(
             detail="Current password is incorrect",
         )
     current_user.hashed_password = get_password_hash(payload.new_password)
+    notification_service.create_notification(
+        db=db,
+        user_id=current_user.id,
+        title="Password Changed",
+        message="Your password was changed successfully.",
+    )
     db.commit()
     return {"message": "Password changed successfully"}
