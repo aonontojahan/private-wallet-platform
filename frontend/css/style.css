@@ -1552,3 +1552,242 @@ a {
   height: 18px;
   accent-color: var(--accent);
 }
+
+/* Support Modal */
+.support-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+  padding: 1rem;
+}
+
+.support-modal-overlay.open {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.support-modal {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  width: 100%;
+  max-width: 480px;
+  padding: 1.5rem;
+  transform: translateY(-10px);
+  transition: transform 0.2s;
+}
+
+.support-modal-overlay.open .support-modal {
+  transform: translateY(0);
+}
+
+.support-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.2rem;
+}
+
+.support-modal-title {
+  font-size: 1.15rem;
+  font-weight: 600;
+}
+
+.support-modal .form-group textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+/* Redesigned FAQ Modal */
+.faq-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  z-index: 200;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+  padding: 2rem 1rem;
+  overflow-y: auto;
+}
+
+.faq-modal-overlay.open {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.faq-modal {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  width: 100%;
+  max-width: 860px;
+  transform: translateY(-10px);
+  transition: transform 0.2s;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.faq-modal-overlay.open .faq-modal {
+  transform: translateY(0);
+}
+
+.faq-modal-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.2rem 1.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.faq-brand {
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: var(--text);
+}
+
+.faq-content {
+  padding: 2rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.faq-content h2 {
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+}
+
+.faq-search-wrap {
+  width: 100%;
+  max-width: 420px;
+  margin-bottom: 1.5rem;
+}
+
+.faq-search-wrap input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  color: var(--text);
+  font-size: 0.95rem;
+  text-align: center;
+}
+
+.faq-search-wrap input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.faq-search-wrap input::placeholder {
+  color: var(--text-muted);
+}
+
+.faq-tabs-row {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+  width: 100%;
+}
+
+.faq-tab {
+  padding: 0.55rem 1.1rem;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s;
+}
+
+.faq-tab:hover {
+  background: var(--card-bg-hover);
+}
+
+.faq-tab.active {
+  background: rgba(59, 130, 246, 0.1);
+  color: var(--accent);
+  border-color: rgba(59, 130, 246, 0.35);
+}
+
+.faq-list {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  text-align: left;
+}
+
+.faq-item {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 0.6rem;
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+
+.faq-item:hover {
+  border-color: var(--border);
+}
+
+.faq-question {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.2rem;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: background 0.2s;
+  color: var(--text);
+}
+
+.faq-question:hover {
+  background: var(--card-bg-hover);
+}
+
+.faq-question .faq-arrow {
+  font-size: 1rem;
+  transition: transform 0.25s;
+  color: var(--text-muted);
+  flex-shrink: 0;
+  margin-left: 1rem;
+}
+
+.faq-item.open .faq-arrow {
+  transform: rotate(180deg);
+}
+
+.faq-answer {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease, padding 0.3s ease;
+  padding: 0 1.2rem;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+.faq-item.open .faq-answer {
+  max-height: 500px;
+  padding: 0 1.2rem 1.2rem;
+}

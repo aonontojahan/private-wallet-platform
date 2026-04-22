@@ -4,7 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from backend.database import engine, SessionLocal
 from backend.models import Base, User, Wallet
 from backend.auth import get_password_hash
-from backend.routers import auth, admin, wallet, transactions, notifications
+from backend.routers import auth, admin, wallet, transactions, notifications, support
 
 
 @asynccontextmanager
@@ -46,6 +46,7 @@ app.include_router(admin.router, prefix="/api")
 app.include_router(wallet.router, prefix="/api")
 app.include_router(transactions.router, prefix="/api")
 app.include_router(notifications.router, prefix="/api")
+app.include_router(support.router, prefix="/api")
 
 
 @app.get("/")

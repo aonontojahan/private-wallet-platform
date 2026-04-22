@@ -89,6 +89,43 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  // Support modal
+  const supportBtn = document.getElementById("support-btn");
+  const supportModal = document.getElementById("support-modal");
+  const supportModalClose = document.getElementById("support-modal-close");
+  const supportForm = document.getElementById("support-form");
+  if (supportBtn && supportModal) {
+    supportBtn.addEventListener("click", () => supportModal.classList.add("open"));
+  }
+  if (supportModalClose && supportModal) {
+    supportModalClose.addEventListener("click", () => supportModal.classList.remove("open"));
+    supportModal.addEventListener("click", (e) => {
+      if (e.target === supportModal) supportModal.classList.remove("open");
+    });
+  }
+  if (supportForm) {
+    supportForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const subject = document.getElementById("support-subject").value.trim();
+      const message = document.getElementById("support-message").value.trim();
+      if (!message) {
+        showAlert("alert-container", "Please enter a message.");
+        return;
+      }
+      try {
+        await apiFetch("/support/send", {
+          method: "POST",
+          body: { subject: subject || "Support Request", message },
+        });
+        supportModal.classList.remove("open");
+        supportForm.reset();
+        showAlert("alert-container", "Message sent successfully!", "success");
+      } catch (err) {
+        showAlert("alert-container", err.message || "Failed to send message.");
+      }
+    });
+  }
+
   // FAQ modal
   const helpBtn = document.getElementById("help-btn");
   const faqModal = document.getElementById("faq-modal");

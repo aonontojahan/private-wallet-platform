@@ -33,7 +33,7 @@
       <div class="user-topbar-title">Transactions</div>
     </div>
     <div class="user-topbar-right">
-      <a href="mailto:shakibalarman.cse@gmail.com?subject=Support%20Request" class="topbar-btn">Support</a>
+      <button class="topbar-btn" id="support-btn">Support</button>
       <div class="topbar-pill" id="exchange-pill">
         <span id="exchange-rate-text">1 USDT &rarr; 127.65 BDT</span>
         <button class="swap-btn" id="swap-rate-btn">&#8644;</button>
@@ -126,25 +126,49 @@
     </div>
   </div>
 
+  <!-- Support Modal -->
+  <div class="support-modal-overlay" id="support-modal">
+    <div class="support-modal">
+      <div class="support-modal-header">
+        <div class="support-modal-title">Contact Support</div>
+        <button class="modal-close" id="support-modal-close">&times;</button>
+      </div>
+      <form id="support-form">
+        <div class="form-group">
+          <label>Subject</label>
+          <input type="text" id="support-subject" class="form-control" placeholder="What's this about?" />
+        </div>
+        <div class="form-group">
+          <label>Message</label>
+          <textarea id="support-message" class="form-control" placeholder="Describe your problem here..." required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Send</button>
+      </form>
+    </div>
+  </div>
+
   <!-- FAQ Modal -->
   <div class="faq-modal-overlay" id="faq-modal">
     <div class="faq-modal">
-      <div class="faq-modal-header">
-        <h2>Frequently Asked Questions</h2>
+      <div class="faq-modal-top">
+        <div class="faq-brand">SWAP FAQ</div>
         <button class="modal-close" id="faq-modal-close">&times;</button>
       </div>
-      <div class="faq-search">
-        <input type="text" placeholder="Search for a question" id="faq-search" />
+      <div class="faq-content">
+        <h2>Frequently Asked Questions</h2>
+        <div class="faq-search-wrap">
+          <input type="text" placeholder="Search for a question" id="faq-search" />
+        </div>
+        <div class="faq-tabs-row">
+          <button class="faq-tab active" data-category="all">All</button>
+          <button class="faq-tab" data-category="access">Access & Authorization</button>
+          <button class="faq-tab" data-category="balances">Balances & Funds</button>
+          <button class="faq-tab" data-category="transactions">Transactions & Operations</button>
+          <button class="faq-tab" data-category="accounts">Accounts & Verification</button>
+          <button class="faq-tab" data-category="security">Interface & Security</button>
+        </div>
+        <div class="faq-list" id="faq-list"></div>
       </div>
-      <div class="faq-tabs">
-        <button class="faq-tab active" data-category="all">All</button>
-        <button class="faq-tab" data-category="access">Access & Authorization</button>
-        <button class="faq-tab" data-category="balances">Balances & Funds</button>
-        <button class="faq-tab" data-category="transactions">Transactions & Operations</button>
-        <button class="faq-tab" data-category="accounts">Accounts & Verification</button>
-        <button class="faq-tab" data-category="security">Interface & Security</button>
-      </div>
-      <div class="faq-list" id="faq-list"></div>
     </div>
   </div>
 
