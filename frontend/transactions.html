@@ -74,57 +74,63 @@
   <div class="user-page-content">
     <div id="alert-container"></div>
 
-    <div class="filter-bar">
-      <div class="form-group">
-        <label>From</label>
-        <input type="date" id="filter-from" class="form-control" />
+    <div class="tx-section">
+      <div class="tx-filter-bar">
+        <div class="tx-filter-group">
+          <label>Period</label>
+          <div class="tx-date-input" id="tx-date-wrap">
+            <span>Date</span>
+            <span class="tx-date-sep">-</span>
+            <input type="date" id="filter-from" />
+            <button class="tx-date-btn" id="tx-date-btn">&#128197;</button>
+          </div>
+        </div>
+        <div class="tx-filter-group">
+          <label>Transaction ID</label>
+          <input type="text" class="tx-input" placeholder="Transaction ID" id="filter-tx-id" />
+        </div>
+        <div class="tx-filter-group">
+          <label>Account type</label>
+          <select class="tx-select" id="filter-account-type">
+            <option value="">All</option>
+            <option value="bkash">bKash</option>
+            <option value="nagad">Nagad</option>
+            <option value="bank">Bank</option>
+          </select>
+        </div>
+        <button class="tx-filter-btn" id="btn-filter" title="Filter">&#8801;</button>
+        <button class="tx-download" id="btn-download">
+          <span>&#128229;</span> Download
+        </button>
       </div>
-      <div class="form-group">
-        <label>To</label>
-        <input type="date" id="filter-to" class="form-control" />
-      </div>
-      <div class="form-group">
-        <label>Type</label>
-        <select id="filter-type" class="form-control">
-          <option value="">All</option>
-          <option value="deposit">Deposit</option>
-          <option value="withdrawal">Withdrawal</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label>Status</label>
-        <select id="filter-status" class="form-control">
-          <option value="">All</option>
-          <option value="pending">Pending</option>
-          <option value="approved">Approved</option>
-          <option value="rejected">Rejected</option>
-        </select>
-      </div>
-      <button class="btn btn-primary" id="btn-filter">Filter</button>
-      <button class="btn btn-success" id="btn-export">Download CSV</button>
-    </div>
 
-    <div class="card">
-      <div class="table-container">
-        <table class="data-table">
+      <div class="tx-tabs">
+        <button class="tx-tab active" data-tab="all">All</button>
+        <button class="tx-tab" data-tab="usdt_sell">USDT Sell</button>
+      </div>
+
+      <div class="tx-table-wrap">
+        <table class="tx-table">
           <thead>
             <tr>
-              <th>ID</th>
-              <th>Type</th>
-              <th>Account</th>
-              <th>Number</th>
-              <th>Amount</th>
-              <th>Commission</th>
-              <th>Income Deduct</th>
-              <th>Status</th>
-              <th>Date</th>
+              <th>TRANSACTION ID <span class="sort-icon">&#8693;</span></th>
+              <th>ACCOUNT TYPE</th>
+              <th>TRANSACTION TYPE</th>
+              <th>ACCOUNT NUMBER</th>
+              <th>AMOUNT <span class="sort-icon">&#8693;</span></th>
+              <th>COMMISSION <span class="sort-icon">&#8693;</span></th>
+              <th>INCOME DEDUCT</th>
+              <th>STATUS</th>
             </tr>
           </thead>
           <tbody id="transactions-body"></tbody>
         </table>
+        <div class="no-data" id="tx-no-data" style="display:none;">No Data</div>
       </div>
     </div>
   </div>
+
+  <button class="feedback-btn" id="feedback-btn">Leave feedback</button>
 
   <!-- Support Modal -->
   <div class="support-modal-overlay" id="support-modal">

@@ -81,8 +81,14 @@
             <div class="balance-card-icon">&#8962;</div>
             <div class="balance-card-title">Trust balance</div>
           </div>
+          <button class="btn btn-primary" id="btn-withdraw">Withdraw</button>
         </div>
         <div class="balance-amount" id="trust-balance">0.00 <span style="font-size:1rem; color:var(--text-muted);">BDT</span></div>
+        <div class="balance-status-row">
+          <span>Status:</span>
+          <span class="status-dot" id="trust-status-dot"></span>
+        </div>
+        <div class="balance-minimum">Allowable minimum trust balance <strong>15.000 BDT</strong></div>
       </div>
       <div class="user-balance-card">
         <div class="balance-card-header">
@@ -90,34 +96,68 @@
             <div class="balance-card-icon">&#128200;</div>
             <div class="balance-card-title">Income balance</div>
           </div>
+          <div class="income-toggle-group">
+            <span class="income-toggle-label">Deduct from income</span>
+            <label class="toggle-switch">
+              <input type="checkbox" checked />
+              <span class="toggle-slider"></span>
+            </label>
+            <span class="info-icon" title="Deduct withdrawal fee from income balance">&#9432;</span>
+          </div>
         </div>
         <div class="balance-amount" id="income-balance">0.00 <span style="font-size:1rem; color:var(--text-muted);">BDT</span></div>
       </div>
     </div>
 
-    <div style="margin-bottom:1.5rem;">
-      <button class="btn btn-primary" id="btn-new-withdrawal">New Withdrawal</button>
-    </div>
+    <div class="tx-section">
+      <div class="tx-section-title">Withdrawals</div>
+      <div class="tx-filter-bar">
+        <div class="tx-filter-group">
+          <label>Period</label>
+          <div class="tx-date-input" id="wd-date-wrap">
+            <span>Date</span>
+            <span class="tx-date-sep">-</span>
+            <input type="date" id="filter-from" />
+            <button class="tx-date-btn" id="wd-date-btn">&#128197;</button>
+          </div>
+        </div>
+        <div class="tx-filter-group">
+          <label>Withdrawal ID</label>
+          <input type="text" class="tx-input" placeholder="ID" id="filter-wd-id" />
+        </div>
+        <div class="tx-filter-group">
+          <label>Status</label>
+          <select class="tx-select" id="filter-wd-status">
+            <option value="">All</option>
+            <option value="pending">Pending</option>
+            <option value="approved">Approved</option>
+            <option value="rejected">Rejected</option>
+          </select>
+        </div>
+        <button class="tx-filter-btn" id="btn-filter" title="Filter">&#8801;</button>
+        <button class="tx-download" id="btn-download">
+          <span>&#128229;</span> Download
+        </button>
+      </div>
 
-    <div class="card">
-      <div class="card-header"><div class="card-title">Withdrawal History</div></div>
-      <div class="table-container">
-        <table class="data-table">
+      <div class="tx-table-wrap">
+        <table class="tx-table wd-table">
           <thead>
             <tr>
-              <th>ID</th>
-              <th>Amount</th>
-              <th>Account</th>
-              <th>Number</th>
-              <th>Status</th>
-              <th>Date</th>
+              <th>WITHDRAWAL ID <span class="sort-icon">&#8693;</span></th>
+              <th>WITHDRAWAL AMOUNT <span class="sort-icon">&#8693;</span></th>
+              <th>STATUS</th>
+              <th>ACTION</th>
             </tr>
           </thead>
           <tbody id="withdrawals-body"></tbody>
         </table>
+        <div class="no-data" id="wd-no-data" style="display:none;">No Data</div>
       </div>
     </div>
   </div>
+
+  <button class="feedback-btn" id="feedback-btn">Leave feedback</button>
 
   <div class="modal-overlay" id="withdrawal-modal">
     <div class="modal">
