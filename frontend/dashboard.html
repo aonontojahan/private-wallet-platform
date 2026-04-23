@@ -171,9 +171,8 @@
           </div>
         </div>
       </div>
+      <button class="show-details" id="btn-show-details">Show details</button>
     </div>
-
-    <button class="show-details" id="btn-show-details">Show details</button>
 
     <!-- Transactions Section -->
     <div class="card" style="margin-bottom:1.5rem;">
@@ -181,7 +180,17 @@
       <div class="filter-bar">
         <div class="form-group">
           <label>Period</label>
-          <input type="date" id="filter-from" class="form-control" />
+          <div class="date-range-filter">
+            <div class="date-input-wrap">
+              <span>From</span>
+              <input type="date" id="filter-from" class="form-control" />
+            </div>
+            <span class="date-separator">-</span>
+            <div class="date-input-wrap">
+              <span>To</span>
+              <input type="date" id="filter-to" class="form-control" />
+            </div>
+          </div>
         </div>
         <div class="form-group">
           <label>Transaction ID</label>

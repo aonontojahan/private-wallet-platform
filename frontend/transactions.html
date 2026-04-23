@@ -79,11 +79,18 @@
       <div class="tx-filter-bar">
         <div class="tx-filter-group">
           <label>Period</label>
-          <div class="tx-date-input" id="tx-date-wrap">
-            <span>Date</span>
-            <span class="tx-date-sep">-</span>
-            <input type="date" id="filter-from" />
-            <button class="tx-date-btn" id="tx-date-btn">&#128197;</button>
+          <div class="tx-date-range">
+            <div class="tx-date-input" id="tx-date-from-wrap">
+              <span>From</span>
+              <input type="date" id="filter-from" />
+              <button class="tx-date-btn" id="tx-date-from-btn">&#128197;</button>
+            </div>
+            <span class="tx-date-separator">-</span>
+            <div class="tx-date-input" id="tx-date-to-wrap">
+              <span>To</span>
+              <input type="date" id="filter-to" />
+              <button class="tx-date-btn" id="tx-date-to-btn">&#128197;</button>
+            </div>
           </div>
         </div>
         <div class="tx-filter-group">

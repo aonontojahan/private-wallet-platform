@@ -28,11 +28,14 @@ document.addEventListener("DOMContentLoaded", async () => {
   const btnFilter = document.getElementById("btn-filter");
   const btnDownload = document.getElementById("btn-download");
   const filterFrom = document.getElementById("filter-from");
+  const filterTo = document.getElementById("filter-to");
   const filterTxId = document.getElementById("filter-tx-id");
   const filterAccountType = document.getElementById("filter-account-type");
   const tabs = document.querySelectorAll(".tx-tab");
-  const dateWrap = document.getElementById("tx-date-wrap");
-  const dateBtn = document.getElementById("tx-date-btn");
+  const dateFromWrap = document.getElementById("tx-date-from-wrap");
+  const dateFromBtn = document.getElementById("tx-date-from-btn");
+  const dateToWrap = document.getElementById("tx-date-to-wrap");
+  const dateToBtn = document.getElementById("tx-date-to-btn");
 
   let allTransactions = [];
   let activeTab = "all";
@@ -49,13 +52,20 @@ document.addEventListener("DOMContentLoaded", async () => {
   function render(items) {
     let filtered = [...items];
     const fromVal = filterFrom.value;
+    const toVal = filterTo.value;
     const txIdVal = filterTxId.value.trim().toLowerCase();
     const accTypeVal = filterAccountType.value;
 
+    // Filter by date range
     if (fromVal) {
       const fromDate = new Date(fromVal);
       fromDate.setHours(0, 0, 0, 0);
       filtered = filtered.filter((t) => new Date(t.created_at) >= fromDate);
+    }
+    if (toVal) {
+      const toDate = new Date(toVal);
+      toDate.setHours(23, 59, 59, 999); // End of day
+      filtered = filtered.filter((t) => new Date(t.created_at) <= toDate);
     }
     if (txIdVal) {
       filtered = filtered.filter((t) => t.id.toString().includes(txIdVal));
@@ -133,17 +143,36 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   });
 
-  if (dateWrap && filterFrom) {
-    dateWrap.addEventListener("click", (e) => {
+  // Date range picker handlers
+  if (dateFromWrap && filterFrom) {
+    dateFromWrap.addEventListener("click", (e) => {
       if (e.target !== filterFrom) filterFrom.showPicker?.() || filterFrom.focus();
     });
-    filterFrom.addEventListener("change", () => render(allTransactions));
   }
-  if (dateBtn && filterFrom) {
-    dateBtn.addEventListener("click", (e) => {
+  if (dateFromBtn && filterFrom) {
+    dateFromBtn.addEventListener("click", (e) => {
       e.stopPropagation();
       filterFrom.showPicker?.() || filterFrom.focus();
     });
+  }
+  if (dateToWrap && filterTo) {
+    dateToWrap.addEventListener("click", (e) => {
+      if (e.target !== filterTo) filterTo.showPicker?.() || filterTo.focus();
+    });
+  }
+  if (dateToBtn && filterTo) {
+    dateToBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      filterTo.showPicker?.() || filterTo.focus();
+    });
+  }
+
+  // Auto-filter when dates change
+  if (filterFrom) {
+    filterFrom.addEventListener("change", () => render(allTransactions));
+  }
+  if (filterTo) {
+    filterTo.addEventListener("change", () => render(allTransactions));
   }
 
   load();

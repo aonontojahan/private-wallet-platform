@@ -212,19 +212,20 @@ async function loadNotificationBell() {
       badge.style.display = unread.length > 0 ? "block" : "none";
     }
 
-    bell.addEventListener("click", (e) => {
+    // Remove existing click handler by using onclick
+    bell.onclick = function(e) {
       e.stopPropagation();
       if (dropdown) {
         dropdown.classList.toggle("open");
         renderNotifications(dropdown, notifications.slice(0, 5));
       }
-    });
+    };
 
     document.addEventListener("click", () => {
       if (dropdown) dropdown.classList.remove("open");
     });
-  } catch {
-    // silent
+  } catch (err) {
+    console.error("Failed to load notifications:", err);
   }
 }
 
@@ -237,10 +238,11 @@ function renderNotifications(dropdownEl, items) {
   body.innerHTML = items
     .map(
       (n) => `
-    <div class="notification-item" onclick="markNotificationRead(${n.id})">
+    <div class="notification-item ${n.is_read ? 'read' : 'unread'}" onclick="markNotificationRead(${n.id})">
       <strong>${escapeHtml(n.title)}</strong>
       <p>${escapeHtml(n.message)}</p>
       <small>${formatDate(n.created_at)}</small>
+      ${!n.is_read ? '<div class="unread-dot"></div>' : ''}
     </div>
   `
     )
@@ -250,9 +252,24 @@ function renderNotifications(dropdownEl, items) {
 async function markNotificationRead(id) {
   try {
     await apiFetch(`/notifications/${id}/read`, { method: "POST" });
-    loadNotificationBell();
-  } catch {
-    // silent
+    // Reload notifications to update badge and dropdown
+    const notifications = await apiFetch("/notifications/");
+    if (notifications) {
+      // Update badge
+      const badge = document.getElementById("notification-badge");
+      const unread = notifications.filter((n) => !n.is_read);
+      if (badge) {
+        badge.textContent = unread.length;
+        badge.style.display = unread.length > 0 ? "block" : "none";
+      }
+      // Update dropdown if open
+      const dropdown = document.getElementById("notification-dropdown");
+      if (dropdown && dropdown.classList.contains("open")) {
+        renderNotifications(dropdown, notifications.slice(0, 5));
+      }
+    }
+  } catch (err) {
+    console.error("Failed to mark notification as read:", err);
   }
 }
 

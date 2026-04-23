@@ -27,12 +27,17 @@
 
     <div class="main-content" id="main-content">
       <header class="topbar">
-        <div class="topbar-left"><h2>Admin Dashboard</h2></div>
+        <div class="topbar-left"><h2>Admin Control Center</h2></div>
         <div class="topbar-right">
           <div class="notification-bell" id="notification-bell">
             &#128276;
             <span class="badge" id="notification-badge" style="display:none;">0</span>
-            <div class="notification-dropdown" id="notification-dropdown"></div>
+            <div class="notification-dropdown" id="notification-dropdown">
+              <div class="notification-dropdown-header">
+                <span>Notifications</span>
+              </div>
+              <div class="notification-dropdown-body" id="notification-dropdown-body"></div>
+            </div>
           </div>
           <div class="user-menu">
             <span id="topbar-user-name">Admin</span>
@@ -43,53 +48,129 @@
       <div class="page-content">
         <div id="alert-container"></div>
 
-        <div class="grid grid-2" style="margin-bottom:1.5rem;">
-          <div class="balance-card">
-            <div class="label">Trust Balance</div>
-            <div class="amount" id="trust-balance">0.00</div>
-            <div class="icon">&#128176;</div>
+        <!-- Platform Overview Stats -->
+        <div class="admin-stats-grid">
+          <div class="admin-stat-card">
+            <div class="admin-stat-icon">&#128101;</div>
+            <div class="admin-stat-info">
+              <div class="admin-stat-value" id="stat-total-users">0</div>
+              <div class="admin-stat-label">Total Users</div>
+            </div>
           </div>
-          <div class="balance-card">
-            <div class="label">Income Balance</div>
-            <div class="amount" id="income-balance">0.00</div>
-            <div class="icon">&#128200;</div>
-            <div style="margin-top:0.75rem; display:flex; align-items:center; gap:0.5rem;">
-              <label class="toggle-switch">
-                <input type="checkbox" id="deduct-toggle" />
-                <span class="toggle-slider"></span>
-              </label>
-              <span style="font-size:0.85rem; color:var(--text-muted);">Deduct from income</span>
+          <div class="admin-stat-card">
+            <div class="admin-stat-icon">&#128176;</div>
+            <div class="admin-stat-info">
+              <div class="admin-stat-value" id="stat-total-trust">0.00</div>
+              <div class="admin-stat-label">Total Trust Balance</div>
+            </div>
+          </div>
+          <div class="admin-stat-card">
+            <div class="admin-stat-icon">&#128200;</div>
+            <div class="admin-stat-info">
+              <div class="admin-stat-value" id="stat-total-income">0.00</div>
+              <div class="admin-stat-label">Total Income Balance</div>
+            </div>
+          </div>
+          <div class="admin-stat-card">
+            <div class="admin-stat-icon">&#9203;</div>
+            <div class="admin-stat-info">
+              <div class="admin-stat-value" id="stat-pending-count">0</div>
+              <div class="admin-stat-label">Pending Transactions</div>
             </div>
           </div>
         </div>
 
-        <div style="margin-bottom:1.5rem;">
-          <button class="btn btn-success" id="btn-deposit" style="margin-right:0.5rem;">+ Deposit</button>
-          <button class="btn btn-primary" id="btn-withdraw">- Withdraw</button>
+        <!-- Quick Actions -->
+        <div class="card admin-quick-actions">
+          <div class="card-header">
+            <div class="card-title">Quick Actions</div>
+          </div>
+          <div class="quick-actions-grid">
+            <button class="action-btn action-btn-success" id="btn-create-user">
+              <span class="action-icon">&#10133;</span>
+              <span>Create User</span>
+            </button>
+            <button class="action-btn action-btn-primary" id="btn-deposit">
+              <span class="action-icon">&#128179;</span>
+              <span>Make Deposit</span>
+            </button>
+            <button class="action-btn action-btn-warning" id="btn-pending">
+              <span class="action-icon">&#9989;</span>
+              <span>Review Pending</span>
+            </button>
+            <button class="action-btn action-btn-info" id="btn-adjust-balance">
+              <span class="action-icon">&#9881;</span>
+              <span>Adjust Balance</span>
+            </button>
+          </div>
         </div>
 
-        <div class="grid grid-4" style="margin-bottom:1.5rem;">
-          <div class="stat-card">
-            <div class="value" id="stat-deposits">0.00</div>
-            <div class="label">Total Deposits</div>
+        <!-- User Management Section -->
+        <div class="card admin-user-management">
+          <div class="card-header">
+            <div class="card-title">User Management</div>
+            <div class="admin-card-actions">
+              <input type="text" class="admin-search-input" id="user-search" placeholder="Search users..." />
+              <select class="admin-filter-select" id="user-filter">
+                <option value="all">All Users</option>
+                <option value="active">Active</option>
+                <option value="inactive">Inactive</option>
+                <option value="admin">Admins</option>
+              </select>
+            </div>
           </div>
-          <div class="stat-card">
-            <div class="value" id="stat-withdrawals">0.00</div>
-            <div class="label">Total Withdrawals</div>
-          </div>
-          <div class="stat-card">
-            <div class="value" id="stat-pending">0</div>
-            <div class="label">Pending</div>
-          </div>
-          <div class="stat-card">
-            <div class="value" id="stat-count">0</div>
-            <div class="label">Transactions</div>
+          <div class="table-container">
+            <table class="data-table admin-user-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Trust Balance</th>
+                  <th>Income Balance</th>
+                  <th>Status</th>
+                  <th>Role</th>
+                  <th>Created</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="users-table-body">
+                <tr><td colspan="9" class="empty-state">Loading users...</td></tr>
+              </tbody>
+            </table>
           </div>
         </div>
 
+        <!-- Pending Transactions Section -->
+        <div class="card admin-pending-section">
+          <div class="card-header">
+            <div class="card-title">Pending Transactions</div>
+            <a href="withdrawals.html" class="btn btn-sm btn-primary">View All</a>
+          </div>
+          <div class="table-container">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>User</th>
+                  <th>Type</th>
+                  <th>Amount</th>
+                  <th>Account</th>
+                  <th>Date</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="pending-transactions-body">
+                <tr><td colspan="7" class="empty-state">No pending transactions</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Recent Activity -->
         <div class="card">
           <div class="card-header">
-            <div class="card-title">Recent Transactions</div>
+            <div class="card-title">Recent Activity</div>
             <a href="transactions.html">View All</a>
           </div>
           <div class="table-container">
@@ -97,6 +178,7 @@
               <thead>
                 <tr>
                   <th>ID</th>
+                  <th>User</th>
                   <th>Type</th>
                   <th>Amount</th>
                   <th>Status</th>
@@ -108,6 +190,84 @@
           </div>
         </div>
       </div>
+    </div>
+  </div>
+
+  <!-- User Detail Modal -->
+  <div class="modal-overlay" id="user-detail-modal">
+    <div class="modal modal-lg">
+      <div class="modal-header">
+        <div class="modal-title">User Details</div>
+        <button class="modal-close" id="user-detail-close">&times;</button>
+      </div>
+      <div class="modal-body" id="user-detail-content">
+        <!-- User details will be loaded here -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Balance Adjustment Modal -->
+  <div class="modal-overlay" id="adjust-balance-modal">
+    <div class="modal">
+      <div class="modal-header">
+        <div class="modal-title">Adjust User Balance</div>
+        <button class="modal-close" id="adjust-balance-close">&times;</button>
+      </div>
+      <form id="adjust-balance-form">
+        <div class="form-group">
+          <label>Select User</label>
+          <select id="adjust-user-select" class="form-control" required>
+            <option value="">Choose a user...</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Wallet Type</label>
+          <select id="adjust-wallet-type" class="form-control" required>
+            <option value="trust">Trust Balance</option>
+            <option value="income">Income Balance</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Amount (use - for deduction)</label>
+          <input type="number" step="0.0001" id="adjust-amount" class="form-control" placeholder="e.g., 100 or -50" required />
+        </div>
+        <div class="form-group">
+          <label>Description</label>
+          <input type="text" id="adjust-description" class="form-control" placeholder="Reason for adjustment" />
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Adjust Balance</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Deposit Modal -->
+  <div class="modal-overlay" id="admin-deposit-modal">
+    <div class="modal">
+      <div class="modal-header">
+        <div class="modal-title">Make Deposit</div>
+        <button class="modal-close" id="admin-deposit-close">&times;</button>
+      </div>
+      <form id="admin-deposit-form">
+        <div class="form-group">
+          <label>Select User</label>
+          <select id="deposit-user-select" class="form-control" required>
+            <option value="">Choose a user...</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Amount</label>
+          <input type="number" step="0.0001" id="deposit-amount" class="form-control" placeholder="Enter amount" required />
+        </div>
+        <div class="form-group">
+          <label>Account Type (Optional)</label>
+          <input type="text" id="deposit-account-type" class="form-control" placeholder="e.g., bKash, Nagad" />
+        </div>
+        <div class="form-group">
+          <label>Account Number (Optional)</label>
+          <input type="text" id="deposit-account-number" class="form-control" placeholder="Account number" />
+        </div>
+        <button type="submit" class="btn btn-success btn-block">Process Deposit</button>
+      </form>
     </div>
   </div>
 

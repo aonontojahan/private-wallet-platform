@@ -105,13 +105,21 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   function renderTransactions(items) {
     const fromVal = document.getElementById("filter-from").value;
+    const toVal = document.getElementById("filter-to").value;
     const txidVal = document.getElementById("filter-txid").value.trim().toLowerCase();
     const accountVal = document.getElementById("filter-account").value;
 
     let filtered = items;
+    // Filter by date range
     if (fromVal) {
       const fromDate = new Date(fromVal);
+      fromDate.setHours(0, 0, 0, 0);
       filtered = filtered.filter((t) => new Date(t.created_at) >= fromDate);
+    }
+    if (toVal) {
+      const toDate = new Date(toVal);
+      toDate.setHours(23, 59, 59, 999); // End of day
+      filtered = filtered.filter((t) => new Date(t.created_at) <= toDate);
     }
     if (txidVal) {
       filtered = filtered.filter((t) => String(t.id).includes(txidVal));
