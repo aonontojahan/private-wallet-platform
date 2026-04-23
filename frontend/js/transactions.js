@@ -77,6 +77,9 @@ document.addEventListener("DOMContentLoaded", async () => {
       filtered = filtered.filter((t) => t.type === "withdrawal");
     }
 
+    // Sort by date descending (newest first)
+    filtered.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+
     if (filtered.length === 0) {
       tbody.innerHTML = "";
       noData.style.display = "block";
