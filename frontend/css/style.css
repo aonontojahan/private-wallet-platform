@@ -745,9 +745,8 @@ a {
 }
 
 .user-page-content {
-  padding: 1.5rem;
-  max-width: 1200px;
-  margin: 0 auto;
+  padding: 1.5rem 2rem;
+  width: 100%;
 }
 
 /* User Balance Cards */
