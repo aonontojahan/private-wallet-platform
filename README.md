@@ -47,20 +47,24 @@ Start the FastAPI server:
 
 ```bash
 # Using direct Python executable (recommended - no activation needed)
-.venv/Scripts/python.exe -m uvicorn backend.main:app --reload
+.venv/Scripts/python.exe -m uvicorn backend.main:app --reload --port 8001
 
 # Or if you prefer to activate the venv first (optional)
 source .venv/Scripts/activate
-python -m uvicorn backend.main:app --reload
+python -m uvicorn backend.main:app --reload --port 8001
 ```
 
-The API will be available at `http://127.0.0.1:8000`.
-- **API Documentation:** http://127.0.0.1:8000/docs
-- **Alternative Documentation:** http://127.0.0.1:8000/redoc
+The API will be available at `http://127.0.0.1:8001`.
+- **API Documentation:** http://127.0.0.1:8001/docs
+- **Alternative Documentation:** http://127.0.0.1:8001/redoc
 
 On first startup, the database tables are auto-created and a default admin user is seeded:
 - **Email:** `admin@wallet.com`
 - **Password:** `admin123`
+
+User Login in info
+- **Email:** `aonontojahan@gmail.com`
+- **Password:** `aonontojahan`
 
 ## Running the Frontend
 
@@ -80,55 +84,4 @@ Then navigate to `http://localhost:3000`.
 ### Option 3: Use any static file server
 You can use VS Code Live Server, Node's `http-server`, or any other static file server to serve the `frontend` folder.
 
-## API Overview
 
-| Prefix | Description |
-|--------|-------------|
-| `/api/auth` | Login, change password, get current user |
-| `/api/admin` | Create users, deposits, approve/reject transactions, balance adjustments |
-| `/api/wallet` | View balances, ledger history, toggle income deduction |
-| `/api/transactions` | Withdrawal requests, list transactions |
-| `/api/notifications` | List and mark notifications as read |
-
-## Project Structure
-
-```
-private-wallet-platform/
-├── backend/
-│   ├── main.py
-│   ├── config.py
-│   ├── database.py
-│   ├── models.py
-│   ├── schemas.py
-│   ├── auth.py
-│   ├── routers/
-│   │   ├── auth.py
-│   │   ├── admin.py
-│   │   ├── wallet.py
-│   │   ├── transactions.py
-│   │   └── notifications.py
-│   └── services/
-│       ├── ledger_service.py
-│       └── notification_service.py
-├── frontend/
-│   ├── index.html
-│   ├── dashboard.html
-│   ├── transactions.html
-│   ├── withdrawals.html
-│   ├── accounts.html
-│   ├── statistics.html
-│   ├── css/
-│   │   └── style.css
-│   └── js/
-│       ├── api.js
-│       ├── auth.js
-│       ├── app.js
-│       ├── dashboard.js
-│       ├── transactions.js
-│       ├── withdrawals.js
-│       ├── accounts.js
-│       └── statistics.js
-├── requirements.txt
-├── .env
-└── README.md
-```
