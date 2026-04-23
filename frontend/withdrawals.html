@@ -167,6 +167,51 @@
 
   <button class="feedback-btn" id="feedback-btn">Leave feedback</button>
 
+  <!-- Feedback Modal -->
+  <div class="feedback-modal-overlay" id="feedback-modal">
+    <div class="feedback-modal">
+      <div class="feedback-modal-header">
+        <div class="feedback-modal-title">Rate our application</div>
+        <button class="modal-close" id="feedback-modal-close">&times;</button>
+      </div>
+      <div class="feedback-modal-body">
+        <div id="feedback-alert-container"></div>
+        
+        <div class="feedback-form-group">
+          <label class="feedback-label">How would you rate your experience with our app?</label>
+          <div class="star-rating" id="star-rating">
+            <span class="star" data-rating="1">&#9733;</span>
+            <span class="star" data-rating="2">&#9733;</span>
+            <span class="star" data-rating="3">&#9733;</span>
+            <span class="star" data-rating="4">&#9733;</span>
+            <span class="star" data-rating="5">&#9733;</span>
+          </div>
+          <div class="rating-text" id="rating-text">Select a rating</div>
+        </div>
+
+        <div class="feedback-form-group">
+          <label for="feedback-experience" class="feedback-label">
+            What would you like to improve about SWAP?
+          </label>
+          <textarea 
+            id="feedback-experience" 
+            class="form-control" 
+            placeholder="Share your experience with us..."
+            rows="4"
+          ></textarea>
+        </div>
+
+        <button class="btn btn-primary btn-block btn-send-feedback" id="btn-send-feedback">
+          <span class="btn-text">Send</span>
+          <span class="btn-loader" style="display:none;">
+            <span class="spinner"></span>
+            Sending...
+          </span>
+        </button>
+      </div>
+    </div>
+  </div>
+
   <div class="modal-overlay" id="withdrawal-modal">
     <div class="modal">
       <div class="modal-header">

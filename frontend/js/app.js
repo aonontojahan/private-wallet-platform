@@ -414,3 +414,156 @@ function clearAlert(containerId) {
   const container = document.getElementById(containerId);
   if (container) container.innerHTML = "";
 }
+
+// ========================================
+// Feedback Modal Functionality
+// ========================================
+
+document.addEventListener("DOMContentLoaded", () => {
+  const feedbackBtn = document.getElementById("feedback-btn");
+  const feedbackModal = document.getElementById("feedback-modal");
+  const feedbackModalClose = document.getElementById("feedback-modal-close");
+  const stars = document.querySelectorAll(".star");
+  const ratingText = document.getElementById("rating-text");
+  const btnSendFeedback = document.getElementById("btn-send-feedback");
+  const feedbackExperience = document.getElementById("feedback-experience");
+  
+  if (!feedbackBtn || !feedbackModal) return;
+  
+  let selectedRating = 0;
+  
+  const ratingLabels = {
+    1: "Very Poor",
+    2: "Poor",
+    3: "Average",
+    4: "Good",
+    5: "Excellent"
+  };
+  
+  // Open feedback modal
+  feedbackBtn.addEventListener("click", () => {
+    feedbackModal.classList.add("open");
+  });
+  
+  // Close feedback modal
+  if (feedbackModalClose) {
+    feedbackModalClose.addEventListener("click", () => {
+      feedbackModal.classList.remove("open");
+      resetFeedbackForm();
+    });
+  }
+  
+  // Close on overlay click
+  feedbackModal.addEventListener("click", (e) => {
+    if (e.target === feedbackModal) {
+      feedbackModal.classList.remove("open");
+      resetFeedbackForm();
+    }
+  });
+  
+  // Star rating interaction
+  stars.forEach((star) => {
+    star.addEventListener("click", () => {
+      selectedRating = parseInt(star.dataset.rating);
+      updateStars(selectedRating);
+      ratingText.textContent = ratingLabels[selectedRating];
+      ratingText.style.color = "var(--accent)";
+    });
+    
+    star.addEventListener("mouseenter", () => {
+      const hoverRating = parseInt(star.dataset.rating);
+      highlightStars(hoverRating);
+    });
+  });
+  
+  // Reset stars on mouse leave
+  const starRatingContainer = document.getElementById("star-rating");
+  if (starRatingContainer) {
+    starRatingContainer.addEventListener("mouseleave", () => {
+      updateStars(selectedRating);
+    });
+  }
+  
+  // Send feedback
+  if (btnSendFeedback) {
+    btnSendFeedback.addEventListener("click", async () => {
+      // Validate
+      if (selectedRating === 0) {
+        showAlert("feedback-alert-container", "Please select a rating", "error");
+        return;
+      }
+      
+      const experience = feedbackExperience?.value.trim() || "";
+      if (!experience) {
+        showAlert("feedback-alert-container", "Please share your experience", "error");
+        return;
+      }
+      
+      // Show loading
+      const btnText = btnSendFeedback.querySelector(".btn-text");
+      const btnLoader = btnSendFeedback.querySelector(".btn-loader");
+      btnText.style.display = "none";
+      btnLoader.style.display = "flex";
+      btnSendFeedback.disabled = true;
+      
+      try {
+        const response = await apiFetch("/feedback", {
+          method: "POST",
+          body: {
+            rating: selectedRating,
+            experience: experience,
+            improvements: "",
+          },
+        });
+        
+        // Success
+        showAlert("feedback-alert-container", response.message, "success");
+        
+        // Reset form after delay
+        setTimeout(() => {
+          feedbackModal.classList.remove("open");
+          resetFeedbackForm();
+          clearAlert("feedback-alert-container");
+        }, 2000);
+        
+      } catch (error) {
+        showAlert("feedback-alert-container", error.message, "error");
+      } finally {
+        btnText.style.display = "block";
+        btnLoader.style.display = "none";
+        btnSendFeedback.disabled = false;
+      }
+    });
+  }
+  
+  function updateStars(rating) {
+    stars.forEach((star) => {
+      const starRating = parseInt(star.dataset.rating);
+      star.classList.toggle("active", starRating <= rating);
+    });
+  }
+  
+  function highlightStars(rating) {
+    stars.forEach((star) => {
+      const starRating = parseInt(star.dataset.rating);
+      if (starRating <= rating) {
+        star.style.color = "#fbbf24";
+      } else {
+        star.style.color = "#e2e8f0";
+      }
+    });
+  }
+  
+  function resetFeedbackForm() {
+    selectedRating = 0;
+    updateStars(0);
+    if (ratingText) {
+      ratingText.textContent = "Select a rating";
+      ratingText.style.color = "var(--text-muted)";
+    }
+    if (feedbackExperience) {
+      feedbackExperience.value = "";
+    }
+    clearAlert("feedback-alert-container");
+  }
+});
