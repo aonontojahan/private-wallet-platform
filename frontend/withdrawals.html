@@ -163,27 +163,34 @@
   <div class="modal-overlay" id="withdrawal-modal">
     <div class="modal">
       <div class="modal-header">
-        <div class="modal-title">Request Withdrawal</div>
+        <div class="modal-title">Create withdrawal</div>
         <button class="modal-close" id="modal-close">&times;</button>
+      </div>
+      <div class="withdraw-info-row">
+        <span>Available for withdrawal</span>
+        <span id="withdraw-available" class="withdraw-amount">0.00 BDT</span>
       </div>
       <form id="withdrawal-form">
         <div class="form-group">
-          <label>Amount</label>
-          <input type="number" step="0.01" id="w-amount" class="form-control" required />
+          <label>Wallet address *</label>
+          <input type="text" id="w-wallet-address" class="form-control" placeholder="Enter wallet address" required />
         </div>
         <div class="form-group">
-          <label>Account Type</label>
-          <select id="w-account-type" class="form-control">
-            <option value="bkash">bKash</option>
-            <option value="nagad">Nagad</option>
-            <option value="bank">Bank</option>
-          </select>
+          <label>Withdrawal amount *</label>
+          <div class="input-with-suffix">
+            <input type="number" step="0.01" id="w-amount" class="form-control" value="1" required />
+            <span class="input-suffix">BDT</span>
+          </div>
+          <div class="rate-note">1 BDT = 0.01 USDT</div>
         </div>
-        <div class="form-group">
-          <label>Account Number</label>
-          <input type="text" id="w-account-number" class="form-control" required />
+        <div class="withdraw-note">
+          Withdrawal takes 30 days from the last order in transactions. If there were no transactions, the refund will take up to 3 days.
         </div>
-        <button type="submit" class="btn btn-primary btn-block">Submit Request</button>
+        <label class="checkbox-label">
+          <input type="checkbox" id="w-understand" required />
+          I understand
+        </label>
+        <button type="submit" class="btn btn-primary btn-block" id="btn-submit-withdraw">Withdraw 0.01 USDT</button>
       </form>
     </div>
   </div>

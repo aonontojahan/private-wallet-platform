@@ -18,8 +18,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   const historyBody = document.getElementById("history-body");
   const histNoData = document.getElementById("hist-no-data");
-  const byAccountBody = document.getElementById("by-account-body");
-  const byNoData = document.getElementById("by-no-data");
 
   const tabs = document.querySelectorAll(".stat-tab");
   const fromEl = document.getElementById("stat-from");
@@ -33,9 +31,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const histDateWrap = document.getElementById("hist-date-wrap");
   const histDateBtn = document.getElementById("hist-date-btn");
 
-  const filterByWallet = document.getElementById("filter-by-wallet");
-  const filterBySystem = document.getElementById("filter-by-system");
-  const btnByDownload = document.getElementById("btn-by-download");
+
 
   let allTransactions = [];
   let activeTab = "trust";
@@ -45,7 +41,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       allTransactions = await apiFetch("/transactions/all");
       compute(allTransactions);
       renderHistory(allTransactions);
-      renderByAccount(allTransactions);
     } catch (err) {
       showAlert("alert-container", err.message);
     }
@@ -176,47 +171,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       .join("");
   }
 
-  function renderByAccount(items) {
-    let filtered = getFiltered();
-    const walletVal = filterByWallet.value.trim();
-    const sysVal = filterBySystem.value;
-
-    if (walletVal) {
-      filtered = filtered.filter((t) => (t.account_number || "").includes(walletVal));
-    }
-    if (sysVal) {
-      filtered = filtered.filter((t) => (t.account_type || "").toLowerCase() === sysVal);
-    }
-
-    const byAccount = {};
-    filtered.forEach((t) => {
-      const acc = t.account_type || "Unknown";
-      if (!byAccount[acc]) byAccount[acc] = { count: 0, total: 0 };
-      byAccount[acc].count++;
-      byAccount[acc].total += Number(t.amount);
-    });
-
-    const entries = Object.entries(byAccount);
-    if (entries.length === 0) {
-      byAccountBody.innerHTML = "";
-      byNoData.style.display = "block";
-      return;
-    }
-    byNoData.style.display = "none";
-
-    byAccountBody.innerHTML = entries
-      .map(
-        ([acc, data]) => `
-      <tr>
-        <td>${escapeHtml(acc)}</td>
-        <td>${data.count}</td>
-        <td class="tx-amount-plain">${formatCurrency(data.total)} BDT</td>
-      </tr>
-    `
-      )
-      .join("");
-  }
-
   tabs.forEach((tab) => {
     tab.addEventListener("click", () => {
       tabs.forEach((t) => t.classList.remove("active"));
@@ -229,12 +183,10 @@ document.addEventListener("DOMContentLoaded", async () => {
   fromEl.addEventListener("change", () => {
     compute(allTransactions);
     renderHistory(allTransactions);
-    renderByAccount(allTransactions);
   });
   toEl.addEventListener("change", () => {
     compute(allTransactions);
     renderHistory(allTransactions);
-    renderByAccount(allTransactions);
   });
 
   if (histDateWrap && filterHistDate) {
@@ -264,19 +216,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     URL.revokeObjectURL(url);
   });
 
-  btnByDownload.addEventListener("click", () => {
-    const rows = allTransactions.map(
-      (t) => `${t.id},${t.type},${t.account_type || ""},${t.amount},${t.status},${t.created_at}`
-    );
-    const csv = "ID,Type,Account,Amount,Status,CreatedAt\n" + rows.join("\n");
-    const blob = new Blob([csv], { type: "text/csv" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "statistics.csv";
-    a.click();
-    URL.revokeObjectURL(url);
-  });
+
 
   load();
 });

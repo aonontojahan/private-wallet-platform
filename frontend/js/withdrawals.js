@@ -25,18 +25,34 @@ document.addEventListener("DOMContentLoaded", async () => {
   const filterStatus = document.getElementById("filter-wd-status");
   const dateWrap = document.getElementById("wd-date-wrap");
   const dateBtn = document.getElementById("wd-date-btn");
+  const withdrawAvailable = document.getElementById("withdraw-available");
+  const wAmount = document.getElementById("w-amount");
+  const btnSubmitWithdraw = document.getElementById("btn-submit-withdraw");
 
   let allWithdrawals = [];
+  let currentTrustBalance = 0;
+
+  function updateButtonText(amount) {
+    const usdt = (parseFloat(amount) || 0) * 0.01;
+    if (btnSubmitWithdraw) {
+      btnSubmitWithdraw.textContent = `Withdraw ${formatCurrency(usdt)} USDT`;
+    }
+  }
 
   async function loadBalances() {
     try {
       const wallet = await apiFetch("/wallet/balances");
       if (wallet) {
         const trustVal = parseFloat(wallet.trust_balance) || 0;
+        currentTrustBalance = trustVal;
         trustEl.innerHTML = `${formatCurrency(wallet.trust_balance)} <span style="font-size:1rem; color:var(--text-muted);">BDT</span>`;
         trustEl.classList.toggle("negative", trustVal < 0);
         if (trustDot) trustDot.classList.toggle("active", trustVal >= 0);
         incomeEl.innerHTML = `${formatCurrency(wallet.income_balance)} <span style="font-size:1rem; color:var(--text-muted);">BDT</span>`;
+        if (withdrawAvailable) {
+          withdrawAvailable.textContent = `${formatCurrency(trustVal)} BDT`;
+          withdrawAvailable.classList.toggle("negative", trustVal < 0);
+        }
       }
     } catch (err) {
       showAlert("alert-container", err.message);
@@ -104,16 +120,27 @@ document.addEventListener("DOMContentLoaded", async () => {
     e.preventDefault();
     clearAlert("alert-container");
     const amount = parseFloat(document.getElementById("w-amount").value);
-    const accountType = document.getElementById("w-account-type").value;
-    const accountNumber = document.getElementById("w-account-number").value;
+    const walletAddress = document.getElementById("w-wallet-address").value;
+    const understand = document.getElementById("w-understand").checked;
+
+    if (!understand) {
+      showAlert("alert-container", "Please confirm that you understand the withdrawal terms.");
+      return;
+    }
+    if (amount <= 0) {
+      showAlert("alert-container", "Amount must be greater than zero.");
+      return;
+    }
 
     try {
       await apiFetch("/transactions/withdrawals", {
         method: "POST",
-        body: { type: "withdrawal", amount, account_type: accountType, account_number: accountNumber },
+        body: { type: "withdrawal", amount, account_type: "wallet", account_number: walletAddress },
       });
       modal.classList.remove("open");
       form.reset();
+      updateButtonText(1);
+      if (withdrawAvailable) withdrawAvailable.textContent = "0.00 BDT";
       await loadBalances();
       await loadWithdrawals();
       showAlert("alert-container", "Withdrawal request submitted", "success");
@@ -121,6 +148,10 @@ document.addEventListener("DOMContentLoaded", async () => {
       showAlert("alert-container", err.message);
     }
   });
+
+  if (wAmount) {
+    wAmount.addEventListener("input", () => updateButtonText(wAmount.value));
+  }
 
   btnFilter.addEventListener("click", () => render(allWithdrawals));
 

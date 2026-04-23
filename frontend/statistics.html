@@ -178,41 +178,6 @@
       </div>
     </div>
 
-    <!-- Transactions by accounts -->
-    <div class="tx-section" style="margin-top:1.5rem;">
-      <h3>Transactions by accounts</h3>
-      <div class="tx-filter-bar">
-        <div class="tx-filter-group">
-          <label>Wallet number</label>
-          <input type="text" class="tx-input" placeholder="Wallet number" id="filter-by-wallet" />
-        </div>
-        <div class="tx-filter-group">
-          <label>Payment system</label>
-          <select class="tx-select" id="filter-by-system">
-            <option value="">All</option>
-            <option value="bkash">bKash</option>
-            <option value="nagad">Nagad</option>
-            <option value="bank">Bank</option>
-          </select>
-        </div>
-        <button class="tx-download" id="btn-by-download" style="margin-left:auto;">
-          <span>&#128229;</span> Download
-        </button>
-      </div>
-      <div class="tx-table-wrap">
-        <table class="tx-table">
-          <thead>
-            <tr>
-              <th>ACCOUNT TYPE</th>
-              <th>COUNT</th>
-              <th>TOTAL AMOUNT</th>
-            </tr>
-          </thead>
-          <tbody id="by-account-body"></tbody>
-        </table>
-        <div class="no-data" id="by-no-data" style="display:none;">No Data</div>
-      </div>
-    </div>
   </div>
 
   <button class="feedback-btn" id="feedback-btn">Leave feedback</button>
