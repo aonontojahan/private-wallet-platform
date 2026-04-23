@@ -219,9 +219,12 @@ a {
   color: var(--accent);
 }
 
-.nav-item i {
+.nav-item i,
+.nav-icon {
   width: 22px;
   text-align: center;
+  font-size: 1.2rem;
+  flex-shrink: 0;
 }
 
 .sidebar-footer {
@@ -1035,6 +1038,16 @@ a {
   color: var(--text-muted);
   cursor: pointer;
   transition: background 0.2s, color 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.nav-icon {
+  font-size: 1.2rem;
+  width: 24px;
+  text-align: center;
+  flex-shrink: 0;
 }
 
 .user-nav-item:hover,
