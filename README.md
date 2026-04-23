@@ -25,10 +25,14 @@ Admin-controlled private wallet platform with secure login, dual-balance system,
 
 3. Create a virtual environment and install dependencies:
    ```bash
-   python -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
-   pip install -r requirements.txt
+   # Create virtual environment
+   python -m venv .venv
+
+   # Install dependencies (no activation needed)
+   .venv/Scripts/python.exe -m pip install -r requirements.txt
    ```
+   
+   **Note:** On Windows with Git Bash, you do NOT need to activate the virtual environment. Use the Python executable directly from `.venv/Scripts/python.exe`.
 
 4. Configure environment variables in `.env` (optional — defaults are provided):
    ```env
@@ -42,10 +46,17 @@ Admin-controlled private wallet platform with secure login, dual-balance system,
 Start the FastAPI server:
 
 ```bash
-python -m uvicorn backend.main:app --host 0.0.0.0 --port 8001
+# Using direct Python executable (recommended - no activation needed)
+.venv/Scripts/python.exe -m uvicorn backend.main:app --reload
+
+# Or if you prefer to activate the venv first (optional)
+source .venv/Scripts/activate
+python -m uvicorn backend.main:app --reload
 ```
 
-The API will be available at `http://localhost:8001`.
+The API will be available at `http://127.0.0.1:8000`.
+- **API Documentation:** http://127.0.0.1:8000/docs
+- **Alternative Documentation:** http://127.0.0.1:8000/redoc
 
 On first startup, the database tables are auto-created and a default admin user is seeded:
 - **Email:** `admin@wallet.com`
@@ -53,15 +64,21 @@ On first startup, the database tables are auto-created and a default admin user 
 
 ## Running the Frontend
 
-The frontend is static HTML/JS. Simply open `frontend/index.html` in your browser, or serve it with any static file server:
+The frontend is static HTML/JS. Choose one of the following methods:
 
+### Option 1: Open Directly in Browser
+Simply open `frontend/index.html` in your browser (file:// protocol).
+
+### Option 2: Serve with Python HTTP Server
 ```bash
-# Using Python's built-in HTTP server (from the frontend folder)
-cd frontend
-python -m http.server 3000
+# Using Python's built-in HTTP server
+.venv/Scripts/python.exe -m http.server 3000 --directory frontend
 ```
 
 Then navigate to `http://localhost:3000`.
+
+### Option 3: Use any static file server
+You can use VS Code Live Server, Node's `http-server`, or any other static file server to serve the `frontend` folder.
 
 ## API Overview
 
