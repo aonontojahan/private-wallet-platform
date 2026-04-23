@@ -6,79 +6,139 @@
   <title>Accounts - Private Wallet Platform</title>
   <link rel="stylesheet" href="css/style.css" />
 </head>
-<body>
-  <div class="layout">
-    <aside class="sidebar" id="sidebar">
-      <div class="sidebar-header">
-        <h3>Private Wallet</h3>
-        <button class="sidebar-toggle" id="sidebar-toggle">&#9776;</button>
-      </div>
-      <ul class="nav-menu">
-        <li class="nav-item" data-href="dashboard.html"><span>Dashboard</span></li>
-        <li class="nav-item" data-href="transactions.html"><span>Transactions</span></li>
-        <li class="nav-item" data-href="withdrawals.html"><span>Withdrawals</span></li>
-        <li class="nav-item active" data-href="accounts.html"><span>Accounts</span></li>
-        <li class="nav-item" data-href="statistics.html"><span>Statistics</span></li>
-      </ul>
-      <div class="sidebar-footer">
-        <button class="btn btn-danger btn-block" id="logout-btn">Logout</button>
-      </div>
-    </aside>
+<body class="user-layout">
+  <!-- User Nav Drawer -->
+  <div class="user-nav-overlay" id="user-nav-overlay"></div>
+  <div class="user-nav-drawer" id="user-nav-drawer">
+    <div class="user-nav-header">
+      <h3>Private Wallet</h3>
+      <button class="user-nav-close" id="user-nav-close">&times;</button>
+    </div>
+    <ul class="user-nav-menu">
+      <li class="user-nav-item" data-href="dashboard.html"><span class="nav-icon">&#127968;</span> Dashboard</li>
+      <li class="user-nav-item" data-href="transactions.html"><span class="nav-icon">&#128179;</span> Transactions</li>
+      <li class="user-nav-item" data-href="withdrawals.html"><span class="nav-icon">&#128184;</span> Withdrawals</li>
+      <li class="user-nav-item active" data-href="accounts.html"><span class="nav-icon">&#128100;</span> Accounts</li>
+      <li class="user-nav-item" data-href="statement.html"><span class="nav-icon">&#128196;</span> Statement</li>
+      <li class="user-nav-item" data-href="statistics.html"><span class="nav-icon">&#128202;</span> Statistics</li>
+    </ul>
+    <div class="user-nav-footer">
+      <button class="btn btn-danger btn-block" id="logout-btn">Logout</button>
+    </div>
+  </div>
 
-    <div class="main-content" id="main-content">
-      <header class="topbar">
-        <div class="topbar-left"><h2>Accounts</h2></div>
-        <div class="topbar-right">
-          <div class="notification-bell" id="notification-bell">
-            &#128276;
-            <span class="badge" id="notification-badge" style="display:none;">0</span>
-            <div class="notification-dropdown" id="notification-dropdown"></div>
+  <!-- Topbar -->
+  <header class="user-topbar">
+    <div class="user-topbar-left">
+      <button class="user-topbar-menu-btn" id="user-menu-btn">&#9776;</button>
+      <div class="user-topbar-title">Accounts</div>
+    </div>
+    <div class="user-topbar-right">
+      <button class="topbar-btn" id="support-btn">Support</button>
+      <div class="topbar-pill" id="exchange-pill">
+        <span id="exchange-rate-text">1 USDT &rarr; 127.65 BDT</span>
+        <button class="swap-btn" id="swap-rate-btn">&#8644;</button>
+      </div>
+      <div class="notification-bell" id="notification-bell">
+        &#128276;
+        <span class="badge" id="notification-badge" style="display:none;">0</span>
+        <div class="notification-dropdown" id="notification-dropdown">
+          <div class="notification-dropdown-header">
+            <span>Notifications</span>
+            <a href="#" onclick="event.preventDefault();">Mark all as read</a>
           </div>
-          <div class="user-menu"><span id="topbar-user-name">User</span></div>
+          <div class="notification-dropdown-body" id="notification-dropdown-body"></div>
         </div>
-      </header>
-
-      <div class="page-content">
-        <div id="alert-container"></div>
-
-        <div id="admin-section" style="display:none;">
-          <div style="margin-bottom:1rem;">
-            <button class="btn btn-success" id="btn-create-user">Create User</button>
-          </div>
-          <div class="card">
-            <div class="table-container">
-              <table class="data-table">
-                <thead>
-                  <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Admin</th>
-                    <th>Active</th>
-                    <th>Created</th>
-                  </tr>
-                </thead>
-                <tbody id="users-body"></tbody>
-              </table>
+      </div>
+      <button class="topbar-icon-btn" id="help-btn" title="Help">?</button>
+      <div class="avatar-wrap">
+        <div class="avatar" id="user-avatar">U</div>
+        <div class="avatar-dropdown" id="avatar-dropdown">
+          <div class="avatar-dropdown-header">
+            <div class="avatar-large" id="dropdown-avatar-large">U</div>
+            <div>
+              <div class="user-name" id="dropdown-user-name">User</div>
+              <div class="user-email" id="dropdown-user-email">user@example.com</div>
             </div>
           </div>
+          <button class="avatar-dropdown-btn">Connect two-factor authentication</button>
+          <button class="avatar-dropdown-btn">Check your manager</button>
+          <div class="avatar-dropdown-divider"></div>
+          <button class="avatar-dropdown-item" onclick="logout()">
+            <span>&#128682;</span> Logout
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="user-page-content">
+    <div id="alert-container"></div>
+
+    <div id="admin-section" style="display:none;">
+      <div style="margin-bottom:1rem;">
+        <button class="btn btn-success" id="btn-create-user">Create User</button>
+      </div>
+      <div class="card">
+        <div class="table-container">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Admin</th>
+                <th>Active</th>
+                <th>Created</th>
+              </tr>
+            </thead>
+            <tbody id="users-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div id="user-section">
+      <div class="ac-section">
+        <div class="ac-filter-bar">
+          <div class="tx-filter-group">
+            <label>Account number</label>
+            <input type="text" class="tx-input" placeholder="Account number" id="filter-ac-number" />
+          </div>
+          <div class="tx-filter-group">
+            <label>Device status</label>
+            <select class="tx-select" id="filter-device-status">
+              <option value="">All</option>
+              <option value="created">Created</option>
+            </select>
+          </div>
+          <div class="tx-filter-group">
+            <label>Account status</label>
+            <select class="tx-select" id="filter-ac-status">
+              <option value="">All</option>
+              <option value="approved">Approved</option>
+              <option value="deleted">Deleted</option>
+            </select>
+          </div>
+          <button class="tx-filter-btn" id="btn-filter" title="Filter">&#8801;</button>
+          <button class="ac-add-btn" id="btn-add-account">Add account</button>
         </div>
 
-        <div id="user-section">
-          <div class="card" style="max-width:480px;">
-            <div class="card-header"><div class="card-title">Change Password</div></div>
-            <form id="change-password-form">
-              <div class="form-group">
-                <label>Current Password</label>
-                <input type="password" id="cp-current" class="form-control" required />
-              </div>
-              <div class="form-group">
-                <label>New Password</label>
-                <input type="password" id="cp-new" class="form-control" required />
-              </div>
-              <button type="submit" class="btn btn-primary">Update Password</button>
-            </form>
-          </div>
+        <div class="tx-table-wrap">
+          <table class="ac-table">
+            <thead>
+              <tr>
+                <th>ACCOUNT ID <span class="sort-icon">&#8693;</span></th>
+                <th>PAYMENT SYSTEM TYPE</th>
+                <th>WALLET NUMBER</th>
+                <th>WALLET BALANCE</th>
+                <th>DEVICE STATUS</th>
+                <th>ACCOUNT STATUS</th>
+              </tr>
+            </thead>
+            <tbody id="accounts-body"></tbody>
+          </table>
+          <div class="no-data" id="ac-no-data" style="display:none;">No Data</div>
         </div>
       </div>
     </div>
@@ -110,6 +170,124 @@
         </div>
         <button type="submit" class="btn btn-primary btn-block">Create User</button>
       </form>
+    </div>
+  </div>
+
+  <!-- Add Account Modal -->
+  <div class="modal-overlay" id="add-account-modal">
+    <div class="modal">
+      <div class="modal-header">
+        <div class="modal-title">Add Account</div>
+        <button class="modal-close" id="ac-modal-close">&times;</button>
+      </div>
+      <form id="add-account-form">
+        <div class="form-group">
+          <label>Payment System</label>
+          <select class="form-control" id="aa-type" required>
+            <option value="bkash">bKash</option>
+            <option value="nagad">Nagad</option>
+            <option value="bank">Bank</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Account Number</label>
+          <input type="text" id="aa-number" class="form-control" placeholder="e.g. 01XXXXXXXXX" required />
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Add Account</button>
+      </form>
+    </div>
+  </div>
+
+  <button class="feedback-btn" id="feedback-btn">Leave feedback</button>
+
+  <!-- Feedback Modal -->
+  <div class="feedback-modal-overlay" id="feedback-modal">
+    <div class="feedback-modal">
+      <div class="feedback-modal-header">
+        <div class="feedback-modal-title">Rate our application</div>
+        <button class="modal-close" id="feedback-modal-close">&times;</button>
+      </div>
+      <div class="feedback-modal-body">
+        <div id="feedback-alert-container"></div>
+        
+        <div class="feedback-form-group">
+          <label class="feedback-label">How would you rate your experience with our app?</label>
+          <div class="star-rating" id="star-rating">
+            <span class="star" data-rating="1">&#9733;</span>
+            <span class="star" data-rating="2">&#9733;</span>
+            <span class="star" data-rating="3">&#9733;</span>
+            <span class="star" data-rating="4">&#9733;</span>
+            <span class="star" data-rating="5">&#9733;</span>
+          </div>
+          <div class="rating-text" id="rating-text">Select a rating</div>
+        </div>
+
+        <div class="feedback-form-group">
+          <label for="feedback-experience" class="feedback-label">
+            What would you like to improve about SWAP?
+          </label>
+          <textarea 
+            id="feedback-experience" 
+            class="form-control" 
+            placeholder="Share your experience with us..."
+            rows="4"
+          ></textarea>
+        </div>
+
+        <button class="btn btn-primary btn-block btn-send-feedback" id="btn-send-feedback">
+          <span class="btn-text">Send</span>
+          <span class="btn-loader" style="display:none;">
+            <span class="spinner"></span>
+            Sending...
+          </span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Support Modal -->
+  <div class="support-modal-overlay" id="support-modal">
+    <div class="support-modal">
+      <div class="support-modal-header">
+        <div class="support-modal-title">Contact Support</div>
+        <button class="modal-close" id="support-modal-close">&times;</button>
+      </div>
+      <form id="support-form">
+        <div class="form-group">
+          <label>Subject</label>
+          <input type="text" id="support-subject" class="form-control" placeholder="What's this about?" />
+        </div>
+        <div class="form-group">
+          <label>Message</label>
+          <textarea id="support-message" class="form-control" placeholder="Describe your problem here..." required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Send</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- FAQ Modal -->
+  <div class="faq-modal-overlay" id="faq-modal">
+    <div class="faq-modal">
+      <div class="faq-modal-top">
+        <div class="faq-brand">SWAP FAQ</div>
+        <button class="modal-close" id="faq-modal-close">&times;</button>
+      </div>
+      <div class="faq-content">
+        <h2>Frequently Asked Questions</h2>
+        <div class="faq-search-wrap">
+          <input type="text" placeholder="Search for a question" id="faq-search" />
+        </div>
+        <div class="faq-tabs-row">
+          <button class="faq-tab active" data-category="all">All</button>
+          <button class="faq-tab" data-category="access">Access & Authorization</button>
+          <button class="faq-tab" data-category="balances">Balances & Funds</button>
+          <button class="faq-tab" data-category="transactions">Transactions & Operations</button>
+          <button class="faq-tab" data-category="accounts">Accounts & Verification</button>
+          <button class="faq-tab" data-category="security">Interface & Security</button>
+        </div>
+        <div class="faq-list" id="faq-list"></div>
+      </div>
     </div>
   </div>
 

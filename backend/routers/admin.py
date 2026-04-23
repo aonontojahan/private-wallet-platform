@@ -76,6 +76,30 @@ def get_user_detail(
     return result
 
 
+@router.post("/users/{user_id}/toggle-status", response_model=MessageResponse)
+def toggle_user_status(
+    user_id: int,
+    payload: dict,
+    db: Session = Depends(get_db),
+    admin: User = Depends(require_admin),
+):
+    user = db.query(User).filter(User.id == user_id).first()
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="User not found",
+        )
+    if user.id == admin.id:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Cannot deactivate yourself",
+        )
+    user.is_active = payload.get("is_active", not user.is_active)
+    db.commit()
+    action = "activated" if user.is_active else "deactivated"
+    return {"message": f"User {action} successfully"}
+
+
 @router.post("/deposits", response_model=TransactionRead, status_code=201)
 def admin_create_deposit(
     user_id: int,

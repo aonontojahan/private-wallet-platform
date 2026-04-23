@@ -37,6 +37,13 @@ def request_withdrawal(
             detail="Wallet not found",
         )
 
+    # Check if user has sufficient trust balance
+    if wallet.trust_balance < amount:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Insufficient trust balance. Available: {wallet.trust_balance}, Required: {amount}",
+        )
+
     # Debit trust immediately
     ledger_service.debit_trust(
         db=db,
@@ -49,16 +56,21 @@ def request_withdrawal(
     # Optionally debit income
     income_deduct = Decimal(0)
     if wallet.deduct_from_income:
-        income_deduct = amount  # placeholder: deduct same amount from income
-        try:
-            ledger_service.debit_income(
-                db=db,
-                user_id=current_user.id,
-                amount=income_deduct,
-                description=f"Income deduction for withdrawal {amount}",
-                reference_type="withdrawal",
-            )
-        except ValueError:
+        # Only deduct from income if there's sufficient balance
+        if wallet.income_balance >= amount:
+            income_deduct = amount
+            try:
+                ledger_service.debit_income(
+                    db=db,
+                    user_id=current_user.id,
+                    amount=income_deduct,
+                    description=f"Income deduction for withdrawal {amount}",
+                    reference_type="withdrawal",
+                )
+            except ValueError:
+                income_deduct = Decimal(0)
+        else:
+            # If insufficient income, just use what's available or skip
             income_deduct = Decimal(0)
 
     transaction = Transaction(

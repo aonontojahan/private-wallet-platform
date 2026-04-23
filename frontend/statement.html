@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Withdrawals - Private Wallet Platform</title>
+  <title>Statement - Private Wallet Platform</title>
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body class="user-layout">
@@ -17,9 +17,9 @@
     <ul class="user-nav-menu">
       <li class="user-nav-item" data-href="dashboard.html"><span class="nav-icon">&#127968;</span> Dashboard</li>
       <li class="user-nav-item" data-href="transactions.html"><span class="nav-icon">&#128179;</span> Transactions</li>
-      <li class="user-nav-item active" data-href="withdrawals.html"><span class="nav-icon">&#128184;</span> Withdrawals</li>
+      <li class="user-nav-item" data-href="withdrawals.html"><span class="nav-icon">&#128184;</span> Withdrawals</li>
       <li class="user-nav-item" data-href="accounts.html"><span class="nav-icon">&#128100;</span> Accounts</li>
-      <li class="user-nav-item" data-href="statement.html"><span class="nav-icon">&#128196;</span> Statement</li>
+      <li class="user-nav-item active" data-href="statement.html"><span class="nav-icon">&#128196;</span> Statement</li>
       <li class="user-nav-item" data-href="statistics.html"><span class="nav-icon">&#128202;</span> Statistics</li>
     </ul>
     <div class="user-nav-footer">
@@ -31,7 +31,7 @@
   <header class="user-topbar">
     <div class="user-topbar-left">
       <button class="user-topbar-menu-btn" id="user-menu-btn">&#9776;</button>
-      <div class="user-topbar-title">Withdrawals</div>
+      <div class="user-topbar-title" id="page-title">Trust history</div>
     </div>
     <div class="user-topbar-right">
       <button class="topbar-btn" id="support-btn">Support</button>
@@ -75,92 +75,84 @@
   <div class="user-page-content">
     <div id="alert-container"></div>
 
-    <div class="user-balance-grid">
-      <div class="user-balance-card">
-        <div class="balance-card-header">
-          <div class="balance-card-title-group">
-            <div class="balance-card-icon">&#8962;</div>
-            <div class="balance-card-title">Trust balance</div>
-          </div>
-          <button class="btn btn-primary" id="btn-withdraw">Withdraw</button>
-        </div>
-        <div class="balance-amount" id="trust-balance">0.00 <span style="font-size:1rem; color:var(--text-muted);">BDT</span></div>
-        <div class="balance-status-row">
-          <span>Status:</span>
-          <span class="status-dot" id="trust-status-dot"></span>
-        </div>
-        <div class="balance-minimum">Allowable minimum trust balance <strong>15.000 BDT</strong></div>
-      </div>
-      <div class="user-balance-card">
-        <div class="balance-card-header">
-          <div class="balance-card-title-group">
-            <div class="balance-card-icon">&#128200;</div>
-            <div class="balance-card-title">Income balance</div>
-          </div>
-          <div class="income-toggle-group">
-            <span class="income-toggle-label">Deduct from income</span>
-            <label class="toggle-switch">
-              <input type="checkbox" checked />
-              <span class="toggle-slider"></span>
-            </label>
-            <span class="info-icon" title="Deduct withdrawal fee from income balance">&#9432;</span>
-          </div>
-        </div>
-        <div class="balance-amount" id="income-balance">0.00 <span style="font-size:1rem; color:var(--text-muted);">BDT</span></div>
+    <!-- Page tabs -->
+    <div class="stat-page-header" style="margin-bottom:0.5rem;">
+      <div class="stat-tabs">
+        <button class="stat-tab active" data-tab="trust">Trust history</button>
+        <button class="stat-tab" data-tab="income">Income balance</button>
       </div>
     </div>
 
-    <div class="tx-section">
-      <div class="tx-section-title">Withdrawals</div>
+    <!-- Subtitle -->
+    <div class="stmt-subtitle" id="stmt-subtitle">Displays all operations that affected your trust balance</div>
+
+    <!-- Filter bar -->
+    <div class="tx-section" style="margin-top:1rem;">
       <div class="tx-filter-bar">
         <div class="tx-filter-group">
+          <label>Transaction ID</label>
+          <input type="text" class="tx-input" placeholder="Transaction ID" id="filter-stmt-id" />
+        </div>
+        <div class="tx-filter-group">
+          <label>Wallet number</label>
+          <input type="text" class="tx-input" placeholder="Wallet number" id="filter-stmt-wallet" />
+        </div>
+        <div class="tx-filter-group">
           <label>Period</label>
-          <div class="tx-date-range">
-            <div class="tx-date-input" id="wd-date-from-wrap">
-              <span>From</span>
-              <input type="date" id="filter-from" />
-              <button class="tx-date-btn" id="wd-date-from-btn">&#128197;</button>
-            </div>
-            <span class="tx-date-separator">-</span>
-            <div class="tx-date-input" id="wd-date-to-wrap">
-              <span>To</span>
-              <input type="date" id="filter-to" />
-              <button class="tx-date-btn" id="wd-date-to-btn">&#128197;</button>
-            </div>
+          <div class="tx-date-input" id="stmt-date-wrap">
+            <span>Date</span>
+            <span class="tx-date-sep">-</span>
+            <input type="date" id="filter-stmt-date" />
+            <button class="tx-date-btn" id="stmt-date-btn">&#128197;</button>
           </div>
         </div>
         <div class="tx-filter-group">
-          <label>Withdrawal ID</label>
-          <input type="text" class="tx-input" placeholder="ID" id="filter-wd-id" />
+          <label>Operation types</label>
+          <div class="tx-select-wrap">
+            <select class="tx-select" id="filter-stmt-op">
+              <option value="">All</option>
+              <option value="deposit">Deposit</option>
+              <option value="withdrawal">Withdrawal</option>
+            </select>
+            <button class="tx-select-clear" id="clear-op-type" style="display:none;">&times;</button>
+          </div>
         </div>
-        <div class="tx-filter-group">
-          <label>Status</label>
-          <select class="tx-select" id="filter-wd-status">
-            <option value="">All</option>
-            <option value="pending">Pending</option>
-            <option value="approved">Approved</option>
-            <option value="rejected">Rejected</option>
-          </select>
-        </div>
-        <button class="tx-filter-btn" id="btn-filter" title="Filter">&#8801;</button>
-        <button class="tx-download" id="btn-download">
+        <button class="tx-download" id="btn-stmt-download">
           <span>&#128229;</span> Download
         </button>
       </div>
 
-      <div class="tx-table-wrap">
-        <table class="tx-table wd-table">
+      <!-- Trust history table -->
+      <div class="tx-table-wrap" id="trust-table-wrap">
+        <table class="hist-table">
           <thead>
             <tr>
-              <th>WITHDRAWAL ID <span class="sort-icon">&#8693;</span></th>
-              <th>WITHDRAWAL AMOUNT <span class="sort-icon">&#8693;</span></th>
-              <th>STATUS</th>
-              <th>ACTION</th>
+              <th>ID</th>
+              <th>OPERATION TYPE</th>
+              <th>AMOUNT</th>
+              <th>BALANCE</th>
             </tr>
           </thead>
-          <tbody id="withdrawals-body"></tbody>
+          <tbody id="trust-body"></tbody>
         </table>
-        <div class="no-data" id="wd-no-data" style="display:none;">No Data</div>
+        <div class="no-data" id="trust-no-data" style="display:none;">No Data</div>
+      </div>
+
+      <!-- Income balance table -->
+      <div class="tx-table-wrap" id="income-table-wrap" style="display:none;">
+        <table class="hist-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>OPERATION TYPE</th>
+              <th>AMOUNT</th>
+              <th>BALANCE</th>
+              <th>DEDUCTED FROM INCOME</th>
+            </tr>
+          </thead>
+          <tbody id="income-body"></tbody>
+        </table>
+        <div class="no-data" id="income-no-data" style="display:none;">No Data</div>
       </div>
     </div>
   </div>
@@ -209,41 +201,6 @@
           </span>
         </button>
       </div>
-    </div>
-  </div>
-
-  <div class="modal-overlay" id="withdrawal-modal">
-    <div class="modal">
-      <div class="modal-header">
-        <div class="modal-title">Create withdrawal</div>
-        <button class="modal-close" id="modal-close">&times;</button>
-      </div>
-      <div class="withdraw-info-row">
-        <span>Available for withdrawal</span>
-        <span id="withdraw-available" class="withdraw-amount">0.00 BDT</span>
-      </div>
-      <form id="withdrawal-form">
-        <div class="form-group">
-          <label>Wallet address *</label>
-          <input type="text" id="w-wallet-address" class="form-control" placeholder="Enter wallet address" required />
-        </div>
-        <div class="form-group">
-          <label>Withdrawal amount *</label>
-          <div class="input-with-suffix">
-            <input type="number" step="0.01" id="w-amount" class="form-control" value="1" required />
-            <span class="input-suffix">BDT</span>
-          </div>
-          <div class="rate-note">1 BDT = 0.01 USDT</div>
-        </div>
-        <div class="withdraw-note">
-          Withdrawal takes 30 days from the last order in transactions. If there were no transactions, the refund will take up to 3 days.
-        </div>
-        <label class="checkbox-label">
-          <input type="checkbox" id="w-understand" required />
-          I understand
-        </label>
-        <button type="submit" class="btn btn-primary btn-block" id="btn-submit-withdraw">Withdraw 0.01 USDT</button>
-      </form>
     </div>
   </div>
 
@@ -296,6 +253,6 @@
   <script src="js/api.js"></script>
   <script src="js/auth.js"></script>
   <script src="js/app.js"></script>
-  <script src="js/withdrawals.js"></script>
+  <script src="js/statement.js"></script>
 </body>
 </html>

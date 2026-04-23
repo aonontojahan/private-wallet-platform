@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from backend.database import get_db
 from backend.auth import get_current_user
-from backend.models import User
+from backend.models import User, LedgerEntry
 from backend.schemas import WalletRead, LedgerEntryRead, WalletToggleRequest, MessageResponse
 
 router = APIRouter(prefix="/wallet", tags=["Wallet"])
