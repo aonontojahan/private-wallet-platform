@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Privacy Policy - Private Wallet Platform</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: #0b1120;
+      color: #e2e8f0;
+      line-height: 1.6;
+    }
+
+    .navbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 64px;
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2rem;
+      z-index: 1000;
+    }
+    .navbar-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      color: #fff;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 1.25rem;
+    }
+    .navbar-brand .logo-icon {
+      width: 36px; height: 36px;
+      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+      border-radius: 0.6rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+    }
+    .navbar-nav {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+    .navbar-nav a {
+      color: #94a3b8;
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    .navbar-nav a:hover, .navbar-nav a.active { color: #3b82f6; }
+    .navbar-btn {
+      padding: 0.5rem 1.25rem;
+      background: linear-gradient(135deg, #3b82f6, #2563eb);
+      color: #fff;
+      border: none;
+      border-radius: 0.5rem;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .navbar-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4); }
+
+    .hero {
+      padding: 140px 2rem 80px;
+      text-align: center;
+      background: linear-gradient(180deg, rgba(16,185,129,0.06) 0%, transparent 100%);
+      border-bottom: 1px solid rgba(148,163,184,0.08);
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.4rem 1rem;
+      background: rgba(16,185,129,0.1);
+      border: 1px solid rgba(16,185,129,0.2);
+      border-radius: 999px;
+      color: #34d399;
+      font-size: 0.85rem;
+      font-weight: 500;
+      margin-bottom: 1.5rem;
+    }
+    .hero h1 {
+      font-size: 3rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #fff 0%, #94a3b8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 1rem;
+    }
+    .hero p {
+      color: #64748b;
+      font-size: 1.1rem;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 3rem 2rem;
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      gap: 3rem;
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 100px;
+      height: fit-content;
+    }
+    .sidebar-card {
+      background: rgba(30, 41, 59, 0.6);
+      border: 1px solid rgba(148, 163, 184, 0.1);
+      border-radius: 1rem;
+      padding: 1.5rem;
+      backdrop-filter: blur(10px);
+    }
+    .sidebar-title {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #64748b;
+      margin-bottom: 1rem;
+      font-weight: 600;
+    }
+    .toc { list-style: none; }
+    .toc li { margin-bottom: 0.25rem; }
+    .toc a {
+      display: block;
+      padding: 0.5rem 0.75rem;
+      color: #94a3b8;
+      text-decoration: none;
+      font-size: 0.9rem;
+      border-radius: 0.5rem;
+      transition: all 0.2s;
+      border-left: 3px solid transparent;
+    }
+    .toc a:hover, .toc a.active {
+      background: rgba(16,185,129,0.08);
+      color: #34d399;
+      border-left-color: #10b981;
+    }
+
+    .content section {
+      margin-bottom: 3rem;
+      scroll-margin-top: 100px;
+    }
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.25rem;
+    }
+    .section-number {
+      width: 40px; height: 40px;
+      background: linear-gradient(135deg, #10b981, #059669);
+      border-radius: 0.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: #fff;
+      flex-shrink: 0;
+    }
+    .content h2 {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #f1f5f9;
+    }
+    .content p {
+      color: #94a3b8;
+      line-height: 1.8;
+      margin-bottom: 1rem;
+      font-size: 0.95rem;
+    }
+    .content ul {
+      list-style: none;
+      padding: 0;
+    }
+    .content ul li {
+      position: relative;
+      padding-left: 1.75rem;
+      margin-bottom: 0.75rem;
+      color: #94a3b8;
+      line-height: 1.7;
+      font-size: 0.95rem;
+    }
+    .content ul li::before {
+      content: "\2713";
+      position: absolute;
+      left: 0;
+      color: #10b981;
+      font-weight: 700;
+    }
+    .highlight-box {
+      background: linear-gradient(135deg, rgba(16,185,129,0.08), rgba(6,182,212,0.05));
+      border: 1px solid rgba(16,185,129,0.15);
+      border-radius: 0.75rem;
+      padding: 1.25rem 1.5rem;
+      margin: 1.5rem 0;
+    }
+    .highlight-box p { margin: 0; color: #cbd5e1; }
+
+    .footer {
+      border-top: 1px solid rgba(148,163,184,0.1);
+      padding: 3rem 2rem;
+      text-align: center;
+      margin-top: 2rem;
+    }
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+    }
+    .footer-links a {
+      color: #64748b;
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: color 0.2s;
+    }
+    .footer-links a:hover { color: #94a3b8; }
+    .footer-copy {
+      color: #475569;
+      font-size: 0.85rem;
+    }
+
+    @media (max-width: 768px) {
+      .navbar-nav { display: none; }
+      .hero h1 { font-size: 2rem; }
+      .container { grid-template-columns: 1fr; padding: 2rem 1.5rem; }
+      .sidebar { position: static; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <a href="index.html" class="navbar-brand">
+      <div class="logo-icon">&#128176;</div>
+      Private Wallet
+    </a>
+    <ul class="navbar-nav">
+      <li><a href="terms.html">Terms</a></li>
+      <li><a href="privacy.html" class="active">Privacy</a></li>
+      <li><a href="cookies.html">Cookies</a></li>
+    </ul>
+    <a href="index.html" class="navbar-btn">Sign In</a>
+  </nav>
+
+  <header class="hero">
+    <div class="hero-badge">&#128272; Your Data Matters</div>
+    <h1>Privacy Policy</h1>
+    <p>Last updated: April 23, 2026</p>
+  </header>
+
+  <div class="container">
+    <aside class="sidebar">
+      <div class="sidebar-card">
+        <div class="sidebar-title">On this page</div>
+        <ul class="toc">
+          <li><a href="#collect" class="active">Information We Collect</a></li>
+          <li><a href="#use">How We Use It</a></li>
+          <li><a href="#security">Data Security</a></li>
+          <li><a href="#sharing">Data Sharing</a></li>
+          <li><a href="#rights">Your Rights</a></li>
+          <li><a href="#changes">Changes to Policy</a></li>
+          <li><a href="#contact">Contact Us</a></li>
+        </ul>
+      </div>
+    </aside>
+
+    <main class="content">
+      <section id="collect">
+        <div class="section-header">
+          <div class="section-number">01</div>
+          <h2>Information We Collect</h2>
+        </div>
+        <p>We collect information you provide directly to us when you register, use our services, or communicate with us.</p>
+        <ul>
+          <li>Name and email address during registration</li>
+          <li>Transaction and wallet balance data</li>
+          <li>Account activity and login timestamps</li>
+          <li>Support messages and feedback you send us</li>
+        </ul>
+      </section>
+
+      <section id="use">
+        <div class="section-header">
+          <div class="section-number">02</div>
+          <h2>How We Use Your Information</h2>
+        </div>
+        <p>Your information helps us deliver a secure and personalized wallet experience.</p>
+        <ul>
+          <li>Provide and maintain our dual-balance wallet services</li>
+          <li>Process deposits, withdrawals, and maintain ledger records</li>
+          <li>Send real-time notifications about your account activity</li>
+          <li>Respond to your support requests in a timely manner</li>
+          <li>Improve platform security and user experience</li>
+        </ul>
+      </section>
+
+      <section id="security">
+        <div class="section-header">
+          <div class="section-number">03</div>
+          <h2>Data Security</h2>
+        </div>
+        <p>We implement industry-standard security measures including end-to-end encryption, secure bcrypt password hashing, and strict access controls. All sensitive data is protected both in transit and at rest.</p>
+        <div class="highlight-box">
+          <p>While we take every reasonable precaution, no method of transmission over the internet is 100% secure. We continuously monitor and improve our security practices.</p>
+        </div>
+      </section>
+
+      <section id="sharing">
+        <div class="section-header">
+          <div class="section-number">04</div>
+          <h2>Data Sharing</h2>
+        </div>
+        <p>We do not sell, rent, or trade your personal information to third parties. We may only share data when required by law, to protect our rights, or to prevent fraud.</p>
+      </section>
+
+      <section id="rights">
+        <div class="section-header">
+          <div class="section-number">05</div>
+          <h2>Your Rights</h2>
+        </div>
+        <p>You have the right to access, update, correct, or delete your personal information at any time. Contact our support team to exercise these rights.</p>
+      </section>
+
+      <section id="changes">
+        <div class="section-header">
+          <div class="section-number">06</div>
+          <h2>Changes to This Policy</h2>
+        </div>
+        <p>We may update this Privacy Policy periodically. We will notify you of any material changes via email or through a prominent notice on our platform.</p>
+      </section>
+
+      <section id="contact">
+        <div class="section-header">
+          <div class="section-number">07</div>
+          <h2>Contact Us</h2>
+        </div>
+        <p>If you have any questions about this Privacy Policy, please contact us at <a href="mailto:shakibalarman.cse@gmail.com" style="color:#34d399;">shakibalarman.cse@gmail.com</a>.</p>
+      </section>
+    </main>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-links">
+      <a href="terms.html">Terms of Service</a>
+      <a href="privacy.html">Privacy Policy</a>
+      <a href="cookies.html">Cookie Policy</a>
+      <a href="index.html">Back to Login</a>
+    </div>
+    <div class="footer-copy">&copy; 2026 Private Wallet Platform. All rights reserved.</div>
+  </footer>
+
+  <script>
+    const sections = document.querySelectorAll('section[id]');
+    const tocLinks = document.querySelectorAll('.toc a');
+    window.addEventListener('scroll', () => {
+      let current = '';
+      sections.forEach(section => {
+        const sectionTop = section.offsetTop;
+        if (scrollY >= sectionTop - 150) current = section.getAttribute('id');
+      });
+      tocLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === '#' + current) link.classList.add('active');
+      });
+    });
+  </script>
+</body>
+</html>
