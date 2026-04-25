@@ -108,18 +108,18 @@
         <div class="login-footer">
           <div class="login-help">
             <p>Having trouble signing in?</p>
-            <a href="#" class="help-link">Contact Support</a>
+            <a href="#" class="help-link" id="contact-support-link">Contact Support</a>
           </div>
           <div class="login-security-note">
             <span class="security-icon">&#128274;</span>
             <span>Protected by enterprise-grade encryption</span>
           </div>
           <div class="login-legal">
-            <a href="#">Terms of Service</a>
+            <a href="terms.html">Terms of Service</a>
             <span class="legal-divider">&bull;</span>
-            <a href="#">Privacy Policy</a>
+            <a href="privacy.html">Privacy Policy</a>
             <span class="legal-divider">&bull;</span>
-            <a href="#">Cookie Policy</a>
+            <a href="cookies.html">Cookie Policy</a>
           </div>
         </div>
       </div>
@@ -128,6 +128,43 @@
 
   <div class="login-page-footer">
     <p>&copy; 2026 Private Wallet Platform. All rights reserved.</p>
+  </div>
+
+  <!-- Support Modal -->
+  <div class="support-modal-overlay" id="support-modal">
+    <div class="support-modal">
+      <div class="support-modal-header">
+        <h3 class="support-modal-title">Contact Support</h3>
+        <button class="modal-close" id="close-support-modal" type="button">&times;</button>
+      </div>
+      <div id="support-error" class="alert alert-error" style="display:none; margin-bottom:1rem;"></div>
+      <div id="support-success" class="alert alert-success" style="display:none; margin-bottom:1rem;"></div>
+      <form id="support-form">
+        <div class="form-group">
+          <label for="support-name">Name</label>
+          <input type="text" id="support-name" class="form-control" placeholder="Your name" required />
+        </div>
+        <div class="form-group">
+          <label for="support-email">Email</label>
+          <input type="email" id="support-email" class="form-control" placeholder="you@example.com" required />
+        </div>
+        <div class="form-group">
+          <label for="support-subject">Subject</label>
+          <input type="text" id="support-subject" class="form-control" placeholder="How can we help?" required />
+        </div>
+        <div class="form-group">
+          <label for="support-message">Message</label>
+          <textarea id="support-message" class="form-control" placeholder="Describe your issue..." required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block" id="support-submit-btn">
+          <span class="btn-text">Send Message</span>
+          <span class="btn-loader" style="display:none;">
+            <span class="spinner"></span>
+            Sending...
+          </span>
+        </button>
+      </form>
+    </div>
   </div>
 
   <script src="js/api.js"></script>
@@ -155,6 +192,82 @@
           if (btnText && btnLoader) {
             btnText.style.display = 'none';
             btnLoader.style.display = 'flex';
+          }
+        });
+      }
+
+      // Support modal
+      const supportModal = document.getElementById('support-modal');
+      const contactSupportLink = document.getElementById('contact-support-link');
+      const closeSupportModal = document.getElementById('close-support-modal');
+      const supportForm = document.getElementById('support-form');
+      const supportError = document.getElementById('support-error');
+      const supportSuccess = document.getElementById('support-success');
+      const supportSubmitBtn = document.getElementById('support-submit-btn');
+
+      function openSupportModal() {
+        supportModal.classList.add('open');
+        supportError.style.display = 'none';
+        supportSuccess.style.display = 'none';
+      }
+
+      function closeSupportModalFn() {
+        supportModal.classList.remove('open');
+      }
+
+      if (contactSupportLink) {
+        contactSupportLink.addEventListener('click', (e) => {
+          e.preventDefault();
+          openSupportModal();
+        });
+      }
+
+      if (closeSupportModal) {
+        closeSupportModal.addEventListener('click', closeSupportModalFn);
+      }
+
+      if (supportModal) {
+        supportModal.addEventListener('click', (e) => {
+          if (e.target === supportModal) closeSupportModalFn();
+        });
+      }
+
+      if (supportForm) {
+        supportForm.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          supportError.style.display = 'none';
+          supportSuccess.style.display = 'none';
+
+          const btnText = supportSubmitBtn.querySelector('.btn-text');
+          const btnLoader = supportSubmitBtn.querySelector('.btn-loader');
+          if (btnText && btnLoader) {
+            btnText.style.display = 'none';
+            btnLoader.style.display = 'flex';
+          }
+
+          try {
+            const data = await apiFetch('/support/contact', {
+              method: 'POST',
+              body: {
+                name: document.getElementById('support-name').value,
+                email: document.getElementById('support-email').value,
+                subject: document.getElementById('support-subject').value,
+                message: document.getElementById('support-message').value,
+              },
+            });
+            if (data) {
+              supportSuccess.textContent = data.message || 'Message sent successfully!';
+              supportSuccess.style.display = 'block';
+              supportForm.reset();
+            }
+          } catch (err) {
+            supportError.textContent = err.message || 'Failed to send message. Please try again.';
+            supportError.style.display = 'block';
+          } finally {
+            if (btnText && btnLoader) {
+              btnText.style.display = 'inline';
+              btnLoader.style.display = 'none';
+            }
           }
         });
       }

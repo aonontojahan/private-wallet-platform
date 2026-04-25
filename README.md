@@ -36,7 +36,7 @@ Admin-controlled private wallet platform with secure login, dual-balance system,
 
 4. Configure environment variables in `.env` (optional — defaults are provided):
    ```env
-   DATABASE_URL=postgresql://postgres:aonontojahan@localhost:5432/private_wallet
+   DATABASE_URL=postgresql://postgres:shakibalarman@localhost:5432/private_wallet
    SECRET_KEY=super-secret-key-change-in-production
    ACCESS_TOKEN_EXPIRE_MINUTES=60
    ```
